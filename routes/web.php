@@ -22,6 +22,11 @@ Route::middleware(['auth', 'doctor'])->prefix('doctor')->group(function () {
         return view('doctor.dashboard');
     })->name('doctor.dashboard');
 });
+Route::middleware(['auth', 'patient'])->prefix('patient')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('patient.dashboard');
+    })->name('patient.dashboard');
+});
 Route::controller(AuthController::class)->group(function () {
     Route::get('/register', 'showRegister')->middleware('guest')->name('register');
     Route::post('/register', 'register')->middleware('guest');

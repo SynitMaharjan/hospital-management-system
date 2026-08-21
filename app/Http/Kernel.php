@@ -61,6 +61,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'doctor' => \App\Http\Middleware\DoctorMiddleware::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'patient' => \App\Http\Middleware\PatientMiddleware::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
