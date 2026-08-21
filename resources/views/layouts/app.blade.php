@@ -20,15 +20,15 @@
 <body>
 
     <!-- Navbar -->
-   <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
 
         <div class="container">
-
-            <a class="navbar-brand fw-bold">
-                Hospital Management System
-            </a>
-
             @auth
+                <a class="navbar-brand fw-bold"
+                   href="{{ route(auth()->user()->role . '.dashboard') }}">
+                    Hospital Management System
+                </a>
+
                 <div class="ms-auto d-flex align-items-center">
 
                     <span class="text-white me-3">
@@ -46,6 +46,10 @@
                     </form>
 
                 </div>
+            @else
+                <a class="navbar-brand fw-bold" href="{{ url('/') }}">
+                    Hospital Management System
+                </a>
             @endauth
 
         </div>
@@ -58,5 +62,6 @@
         @yield('content')
 
     </main>
+
 </body>
 </html>

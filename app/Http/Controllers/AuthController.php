@@ -26,11 +26,12 @@ class AuthController extends Controller
             "name" => $validated["name"],
             "email" => $validated["email"],
             "password" => Hash::make($validated["password"]),
+            "role" => "doctor", 
         ]);
 
         Auth::login($user);
- 
-        return redirect()->route('admin.dashboard');
+    
+        return redirect()->route('doctor.dashboard');
     }
 
     public function showLogin(){
@@ -44,10 +45,15 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-
+            
             $request->session()->regenerate();
-
-            return redirect()->intended(route('/'));
+            
+            if (Auth::user()->role === 'admin') {
+                return redirect()->intended(route('admin.dashboard'));
+            }
+                
+            return redirect()->intended(route('doctor.dashboard'));
+            
         }
 
         return back()->withErrors([

@@ -12,7 +12,16 @@ use App\Http\Controllers\AuthController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+});
+Route::middleware(['auth', 'doctor'])->prefix('doctor')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('doctor.dashboard');
+    })->name('doctor.dashboard');
+});
 Route::controller(AuthController::class)->group(function () {
     Route::get('/register', 'showRegister')->middleware('guest')->name('register');
     Route::post('/register', 'register')->middleware('guest');
