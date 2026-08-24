@@ -9,63 +9,47 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function showRegister()
-    {
-        return view("auth.register");
-    }
-
-    public function register(Request $request)
-    {
-        $validated = $request->validate([
-            "name" => "required",
-            "email" => "required|email|unique:users",
-            "password" => "required|min:8",
-        ]);
-
-        $user = User::create([
-            "name" => $validated["name"],
-            "email" => $validated["email"],
-            "password" => Hash::make($validated["password"]),
-            "role" => "doctor", 
-        ]);
-
-        Auth::login($user);
-    
-        return redirect()->route('doctor.dashboard');
-    }
-
     public function showLogin(){
         return view("auth.login");
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $credentials = $request->validate([
-        "email" => "required|email",
-        "password" => "required",
+            "email" => "required|email",
+            "password" => "required",
         ]);
 
-        if (Auth::attempt($credentials)) {
-            
-            $request->session()->regenerate();
-            
-            if (Auth::user()->role === 'admin') {
-                return redirect()->intended(route('admin.dashboard'));
-            }
-            else if (Auth::user()->role === 'patient') {
-                return redirect()->intended(route('patient.dashboard'));
-            }
-                
-            return redirect()->intended(route('doctor.dashboard'));
-            
+        if (!Auth::attempt($credentials)) {
+            return back()->withErrors([
+                "email" => "Invalid credentials.",
+                "password" => "Password incorrect.",
+            ]);
         }
 
-        return back()->withErrors([
-            "email" => "Invalid credentials.",
-            "password" => "Password Incorrect.",
-        ]);
-        
-    }
+        $request->session()->regenerate();
 
+        $user = Auth::user();
+
+        $routes = [
+            "admin" => "admin.dashboard",
+            "patient" => "patient.dashboard",
+            "doctor" => "doctor.dashboard",
+            "nurse" => "nurse.dashboard",
+            "receptionist" => "receptionist.dashboard",
+            "pharmacist" => "pharmacist.dashboard",
+        ];
+
+        if (!isset($routes[$user->role])) {
+            Auth::logout();
+
+            return redirect("/login")->withErrors([
+                "email" => "Your account has an invalid role.",
+            ]);
+        }
+
+        return redirect()->intended(route($routes[$user->role]));
+    }
     public function logout(Request $request)
     {
         Auth::logout();

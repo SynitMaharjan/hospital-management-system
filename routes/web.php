@@ -27,9 +27,12 @@ Route::middleware(['auth', 'patient'])->prefix('patient')->group(function () {
         return view('patient.dashboard');
     })->name('patient.dashboard');
 });
+Route::middleware(['auth', 'nurse'])->prefix('nurse')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('nurse.dashboard');
+    })->name('nurse.dashboard');
+});
 Route::controller(AuthController::class)->group(function () {
-    Route::get('/register', 'showRegister')->middleware('guest')->name('register');
-    Route::post('/register', 'register')->middleware('guest');
     Route::get('/login', 'showLogin')->middleware('guest')->name('login');
     Route::post('/login', 'login')->middleware('guest');
     Route::post('/logout', 'logout')->middleware('auth')->name('logout');

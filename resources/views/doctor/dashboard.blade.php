@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-  <h1>Doctor Dashboard</h1>
-  Welcome to the Hospital Management System! This is the doctor dashboard where you can manage your patients.
+    <div class="container">
+      <h1>Welcome, {{ Auth::user()->name }}!</h1>
+      <p>You are logged in as a doctor.</p>
+    </div>
 @endsection

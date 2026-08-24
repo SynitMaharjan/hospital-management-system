@@ -77,21 +77,6 @@
                 </form>
 
 
-                <div class="text-center mt-4">
-
-                    <small class="text-muted">
-
-                        Don't have an account?
-
-                        <a href="{{ route('register') }}">
-                            Register
-                        </a>
-
-                    </small>
-
-                </div>
-
-
             </div>
 
         </div>
