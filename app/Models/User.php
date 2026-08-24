@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'must_change_password',
     ];
 
     /**
@@ -41,5 +42,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'must_change_password' => 'boolean',
     ];
 }

@@ -59,12 +59,15 @@ class Kernel extends HttpKernel
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'doctor' => \App\Http\Middleware\DoctorMiddleware::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'patient' => \App\Http\Middleware\PatientMiddleware::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
+        "must.change.password" => \App\Http\Middleware\MustChangePassword::class,
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'doctor' => \App\Http\Middleware\DoctorMiddleware::class,
+        'patient' => \App\Http\Middleware\PatientMiddleware::class,
+        'nurse' => \App\Http\Middleware\NurseMiddleware::class,
+        'receptionist' => \App\Http\Middleware\ReceptionistMiddleware::class,
     ];
 }
