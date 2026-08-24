@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,13 +15,16 @@ use App\Http\Controllers\PasswordController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::middleware(['auth', 'admin', 'must.change.password'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-    Route::resource('staff', StaffController::class)
-        ->names('admin.staff');
-});
+Route::middleware(['auth', 'admin'])
+    ->prefix('admin')
+    ->group(function () {
+
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])
+            ->name('admin.dashboard');
+
+        Route::resource('staff', StaffController::class)
+            ->names('admin.staff');
+    });
 Route::middleware(['auth', 'doctor', 'must.change.password'])->prefix('doctor')->group(function () {
     Route::get('/dashboard', function () {
         return view('doctor.dashboard');
