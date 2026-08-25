@@ -73,6 +73,15 @@
                         Login
                     </button>
 
+                    <a>
+                        <p class="text-center text-muted mt-3 mb-0">
+                            Don't have an account?
+                            <a href="{{ route('register') }}">
+                                Register
+                            </a>
+                        </p>
+                    </a>
+
 
                 </form>
 

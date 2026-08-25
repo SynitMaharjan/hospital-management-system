@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 
 class AuthController extends Controller
 {
@@ -46,6 +47,25 @@ class AuthController extends Controller
         }
 
         return redirect()->intended(route($routes[$user->role]));
+    }
+    public function showRegister()
+    {
+        return view("auth.register");
+    }
+    public function register(RegisterRequest $request)
+    {
+        $data =$request->validated();
+
+        $user = User::create([
+            "name" => $data['name'],
+            "email" => $data['email'],
+            "password" => Hash::make($data['password']),
+            "role" => "patient", 
+        ]);
+
+        Auth::login($user);
+
+        return redirect()->route("patient.dashboard");
     }
     public function logout(Request $request)
     {
