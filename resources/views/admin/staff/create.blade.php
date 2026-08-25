@@ -16,6 +16,23 @@
     </div>
 
     <div>
+        <label>Username</label>
+        <input type="text" name="username" value="{{ old("username") }}">
+        @error("username")
+            <p>{{ $message }}</p>
+        @enderror
+    </div>
+
+    <div>
+        <label>Employee ID</label>
+        <input type="text" name="employee_id" value="{{ old("employee_id") }}">
+        @error("employee_id")
+            <p>{{ $message }}</p>
+        @enderror
+
+    </div>
+
+    <div>
         <label>Email</label>
         <input type="email" name="email" value="{{ old("email") }}">
         @error("email")

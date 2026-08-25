@@ -39,6 +39,22 @@
                     </div>
 
                     <div class="mb-3">
+                        <label class="form-label">Username</label>
+
+                        <input
+                            type="text"
+                            name="username"
+                            class="form-control"
+                            placeholder="Enter your username"
+                            value="{{ old('username') }}"
+                        >
+
+                        @error('username')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
                         <label class="form-label">Email Address</label>
 
                         <input
@@ -73,6 +89,7 @@
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
+                    
                     <div class="mb-3">
                       
                     <label for="password_confirmation" class="form-label">

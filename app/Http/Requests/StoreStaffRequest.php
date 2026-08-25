@@ -25,6 +25,10 @@ class StoreStaffRequest extends FormRequest
            
             "name" => "required|string|max:255",
 
+            "username" => "required|string|max:255|unique:users,username",
+
+            "employee_id" => "required|string|max:255|unique:users,employee_id",
+
             "email" => "required|email|unique:users,email",
 
             "role" => "required|in:doctor,nurse,receptionist",

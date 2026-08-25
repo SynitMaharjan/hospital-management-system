@@ -27,18 +27,18 @@
                     <div class="mb-3">
 
                         <label class="form-label">
-                            Email Address
+                            Username or Email Address 
                         </label>
 
                         <input
-                            type="email"
-                            name="email"
+                            type="text"
+                            name="login"
                             class="form-control"
-                            placeholder="Enter your email"
-                            value="{{ old('email') }}"
+                            placeholder="Enter your email or username"
+                            value="{{ old('login') }}"
                         >
 
-                        @error('email')
+                        @error('login')
                             <small class="text-danger">
                                 {{ $message }}
                             </small>
@@ -73,14 +73,13 @@
                         Login
                     </button>
 
-                    <a>
-                        <p class="text-center text-muted mt-3 mb-0">
+                    <p class="text-center text-muted mt-3 mb-0">
                             Don't have an account?
                             <a href="{{ route('register') }}">
-                                Register
+                            Register
                             </a>
-                        </p>
-                    </a>
+                    </p>
+                    
 
 
                 </form>

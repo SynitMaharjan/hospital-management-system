@@ -17,13 +17,22 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-        $credentials = $request->validated();
+        $data = $request->validated();
+        $login = $data["login"];
+        $credentials = filter_var($login, FILTER_VALIDATE_EMAIL)
+            ? [
+                "email" => $login,
+                "password" => $data["password"],
+            ]
+            : [
+                "username" => $login,
+                "password" => $data["password"],
+            ];
 
         if (!Auth::attempt($credentials)) {
             return back()->withErrors([
-                "email" => "Invalid credentials.",
-                "password" => "Password incorrect.",
-            ]);
+                "login" => "Invalid username/email or password.",
+            ])->withInput();
         }
 
         $request->session()->regenerate();
@@ -42,7 +51,7 @@ class AuthController extends Controller
             Auth::logout();
 
             return redirect("/login")->withErrors([
-                "email" => "Your account has an invalid role.",
+                "login" => "Your account has an invalid role.",
             ]);
         }
 
@@ -58,6 +67,7 @@ class AuthController extends Controller
 
         $user = User::create([
             "name" => $data['name'],
+            "username" => $data['username'],
             "email" => $data['email'],
             "password" => Hash::make($data['password']),
             "role" => "patient", 

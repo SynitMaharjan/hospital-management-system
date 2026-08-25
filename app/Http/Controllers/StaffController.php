@@ -43,6 +43,8 @@ class StaffController extends Controller
 
         $staff = User::create([
             "name" => $data['name'],
+            "username" => $data['username'],
+            "employee_id" => $data['employee_id'],
             "email" => $data['email'],
             "password" => Hash::make($temporaryPassword),
             "role" => $data['role'],
