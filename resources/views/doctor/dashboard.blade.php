@@ -1,6 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
-@section('content')
+@section('page-title')
+  Doctor Dashboard
+@endsection
+
+@section('dashboard-content')
     <div class="container">
       <h1>Welcome, {{ Auth::user()->name }}!</h1>
       <p>You are logged in as a doctor.</p>

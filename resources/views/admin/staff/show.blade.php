@@ -43,6 +43,30 @@
             <div class="row mb-3">
 
                 <div class="col-md-4 fw-bold">
+                    Username
+                </div>
+
+                <div class="col-md-8">
+                    {{ $staff->username }}
+                </div>
+
+            </div>
+
+            <div class="row mb-3">
+
+                <div class="col-md-4 fw-bold">
+                    Employee ID
+                </div>
+
+                <div class="col-md-8">
+                    {{ $staff->employee_id }}
+                </div>
+
+            </div>
+
+            <div class="row mb-3">
+
+                <div class="col-md-4 fw-bold">
                     Email
                 </div>
 

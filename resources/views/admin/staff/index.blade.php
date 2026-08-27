@@ -1,6 +1,6 @@
-@extends("layouts.app")
+@extends("layouts.dashboard")
 
-@section("content")
+@section("dashboard-content")
 
 <div class="container py-4">
 
@@ -37,6 +37,8 @@
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Username</th>
+                            <th>Employee ID</th>
                             <th>Email</th>
                             <th>Role</th>
                             <th>Created</th>
@@ -52,6 +54,14 @@
 
                                 <td>
                                     {{ $member->name }}
+                                </td>
+
+                                <td>
+                                    {{ $member->username }}
+                                </td>
+
+                                <td>
+                                    {{ $member->employee_id }}
                                 </td>
 
                                 <td>

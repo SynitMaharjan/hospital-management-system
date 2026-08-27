@@ -57,7 +57,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="container py-5">
+    <main>
 
         @yield('content')
 
