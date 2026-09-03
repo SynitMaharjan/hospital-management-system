@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Enums\Role;
 
 class AuthController extends Controller
 {
@@ -47,7 +48,7 @@ class AuthController extends Controller
             "receptionist" => "receptionist.dashboard",
         ];
 
-        if (!isset($routes[$user->role])) {
+        if (!isset($routes[$user->role->value])) {
             Auth::logout();
 
             return redirect("/login")->withErrors([
@@ -55,7 +56,7 @@ class AuthController extends Controller
             ]);
         }
 
-        return redirect()->intended(route($routes[$user->role]));
+        return redirect()->intended(route($routes[$user->role->value]));
     }
     public function showRegister()
     {
@@ -70,7 +71,7 @@ class AuthController extends Controller
             "username" => $data['username'],
             "email" => $data['email'],
             "password" => Hash::make($data['password']),
-            "role" => "patient", 
+            "role" => Role::PATIENT, 
         ]);
 
         Auth::login($user);

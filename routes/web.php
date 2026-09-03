@@ -5,7 +5,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\DepartmentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,6 +29,10 @@ Route::middleware(['auth', 'admin'])
             ->names('admin.staff');
         Route::resource('patient', PatientController::class)
             ->names('admin.patient');
+        Route::resource('appointment', AppointmentController::class)
+            ->names('admin.appointment');
+        Route::resource('department', DepartmentController::class)
+            ->names('admin.department');
     });
 Route::middleware(['auth', 'doctor', 'must.change.password'])->prefix('doctor')->group(function () {
     Route::get('/dashboard', function () {

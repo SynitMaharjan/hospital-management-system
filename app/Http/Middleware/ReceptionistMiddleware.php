@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Enums\Role;
 
 class ReceptionistMiddleware
 {
@@ -17,7 +18,7 @@ class ReceptionistMiddleware
     {
         if(
             auth()->check() &&
-            auth()->user()->role !== "receptionist"
+            auth()->user()->role !== Role::RECEPTIONIST
         ) {
             abort(403, "Unauthorized");
         }

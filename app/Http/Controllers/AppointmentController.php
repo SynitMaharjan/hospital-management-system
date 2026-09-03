@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Patient;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
-use App\Models\User;
 
-class PatientController extends Controller
+class AppointmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $patients = Patient::with('user')->latest()->paginate(10);
-        
-        return view('admin.patient.index', compact('patients'));
+        $appointments = Appointment::with('patients.user','doctor')->latest()->paginate(10);
+        return view('admin.appointment.index', compact('appointments'));
     }
 
     /**

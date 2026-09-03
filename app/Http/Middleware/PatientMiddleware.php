@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Enums\Role;
 
 class PatientMiddleware
 {
@@ -15,7 +16,7 @@ class PatientMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check() && auth()->user()->role !== 'patient') {
+        if (auth()->check() && auth()->user()->role !== Role::PATIENT) {
             abort(403, 'Unauthorized action.');
         }
         return $next($request);

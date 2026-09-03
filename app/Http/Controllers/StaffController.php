@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStaffRequest;
 use App\Http\Requests\UpdateStaffRequest;
-use Illuminate\Http\Request;
 use App\Models\User;
+use App\Enums\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -17,10 +17,12 @@ class StaffController extends Controller
     public function index()
     {
         $staff = User::whereIn("role", [
-        "doctor",
-        "nurse",
-        "receptionist",
-        ])->latest()->paginate(10);
+            Role::DOCTOR->value,
+            Role::NURSE->value,
+            Role::RECEPTIONIST->value,
+        ])
+        ->latest()
+        ->paginate(10);
 
         return view("admin.staff.index", compact("staff"));
     }
@@ -30,7 +32,7 @@ class StaffController extends Controller
      */
     public function create()
     {
-        return view('admin.staff.create');
+        return view("admin.staff.create");
     }
 
     /**
@@ -39,15 +41,16 @@ class StaffController extends Controller
     public function store(StoreStaffRequest $request)
     {
         $data = $request->validated();
+
         $temporaryPassword = Str::password(12);
 
         $staff = User::create([
-            "name" => $data['name'],
-            "username" => $data['username'],
-            "employee_id" => $data['employee_id'],
-            "email" => $data['email'],
+            "name" => $data["name"],
+            "username" => $data["username"],
+            "employee_id" => $data["employee_id"],
+            "email" => $data["email"],
             "password" => Hash::make($temporaryPassword),
-            "role" => $data['role'],
+            "role" => $data["role"],
             "must_change_password" => true,
         ]);
 
@@ -82,7 +85,9 @@ class StaffController extends Controller
 
         $staff->update($data);
 
-        return redirect()->route("admin.staff.index")->with("success", "Staff updated successfully.");
+        return redirect()
+            ->route("admin.staff.index")
+            ->with("success", "Staff updated successfully.");
     }
 
     /**
@@ -91,6 +96,9 @@ class StaffController extends Controller
     public function destroy(User $staff)
     {
         $staff->delete();
-        return redirect()->route("admin.staff.index")->with("success", "Staff deleted successfully.");
+
+        return redirect()
+            ->route("admin.staff.index")
+            ->with("success", "Staff deleted successfully.");
     }
 }

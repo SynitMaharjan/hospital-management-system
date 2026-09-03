@@ -128,13 +128,20 @@
 
             <a href="{{ route("admin.staff.index") }}"
                class="btn btn-primary">
+               <i class="fa-solid fa-eye"></i>
                 View All Staff
             </a>
 
-            <a href="{{ route("admin.staff.create") }}"
-               class="btn btn-outline-primary">
-                Create Staff Account
-            </a>
+            <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#createStaffModal"
+            >
+                <i class="fa-solid fa-user-plus me-1"></i>
+                Create Staff
+            </button>
+            @include("admin.staff.modals.create-from")
 
         </div>
 

@@ -3,11 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Enum;
-use App\Enums\Role;
 
-class UpdateStaffRequest extends FormRequest
+class UpdateDepartmentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,12 +22,8 @@ class UpdateStaffRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required|string|max:255",
-
-            "email" => ["required", "email", Rule::unique("users", "email")
-                    ->ignore($this->staff),],
-
-            "role" => ["required", new Enum(Role::class),]
+            'name' => 'required|string|max:255,unique:departments,name,' . $this->route('department'),
+            'description' => 'nullable|string',
         ];
     }
 }

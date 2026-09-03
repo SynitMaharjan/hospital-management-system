@@ -21,7 +21,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'username' => fake()->unique()->userName(),
-            'employee_id' => fake()->unique()->numerify('EMP###'),
+            'employee_id' => 'EMP' . fake()->unique()->numberBetween(100000, 999999),
             'role' => fake()->randomElement(['doctor', 'nurse', 'receptionist']), 
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password

@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
+use app\Enums\Role;
 
 class StoreStaffRequest extends FormRequest
 {
@@ -31,7 +33,10 @@ class StoreStaffRequest extends FormRequest
 
             "email" => "required|email|unique:users,email",
 
-            "role" => "required|in:doctor,nurse,receptionist",
+            "role" => [
+                        "required",
+                        new Enum(Role::class),
+                    ],
     
         ];
     }

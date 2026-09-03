@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\Gender;
 
 class Patient extends Model
 {
@@ -14,6 +15,10 @@ class Patient extends Model
         'phone',
         'date_of_birth',
         'gender',
+    ];
+
+    protected $casts = [
+        'gender' => Gender::class,
     ];
 
     public function appointments()

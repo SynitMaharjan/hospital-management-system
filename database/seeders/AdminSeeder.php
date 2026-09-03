@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Enums\Role;
 
 class AdminSeeder extends Seeder
 {
@@ -19,7 +20,7 @@ class AdminSeeder extends Seeder
             'employee_id' => 'EMP001',
             'email' => 'admin@example.com',
             'password' => bcrypt('admin123'),
-            'role' => 'admin',
+            'role' => Role::ADMIN,
         ]);
         user::create([
             'name' => 'Doctor User',
@@ -27,7 +28,7 @@ class AdminSeeder extends Seeder
             'employee_id' => 'EMP002',
             'email' => 'doctor@example.com',
             'password' => bcrypt('doctor123'),
-            'role' => 'doctor',
+            'role' => Role::DOCTOR,
         ]);
         user::create([
             'name' => 'Nurse User',
@@ -35,7 +36,7 @@ class AdminSeeder extends Seeder
             'employee_id' => 'EMP003',
             'email' => 'nurse@example.com',
             'password' => bcrypt('nurse123'),
-            'role' => 'nurse',
+            'role' => Role::NURSE,
         ]);
     }
 }

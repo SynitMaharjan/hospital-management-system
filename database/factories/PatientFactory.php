@@ -4,8 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Patient;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-use Database\Factories\UserFactory;
+use App\Models\User;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Patient>
  */
@@ -20,7 +19,7 @@ class PatientFactory extends Factory
     public function definition(): array
     {
         return [
-        "user_id" => UserFactory::factory()->create([
+        "user_id" => User::factory()->create([
                 "role" => "patient",
             ])->id,
 

@@ -15,7 +15,7 @@
 </p>
 
 <p>
-    <strong>Role:</strong> {{ $staff->role }}
+    <strong>Role:</strong> {{ $staff->role->value }}
 </p>
 
 <p>
