@@ -2,20 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Appointment;
 use Illuminate\Http\Request;
-// use App\Http\Requests\StoreAppointmentRequest';
+use App\Models\Appointment;
+use App\Models\Patient;
+use App\Models\Doctor;
 
-class AppointmentController extends Controller
+class PatientAppointmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    
     public function index()
     {
-        $appointments = Appointment::with('patient.user','doctor.user')->latest()->paginate(10);
-        return view('admin.appointment.index', compact('appointments'));
+            $patient = auth()->user()->patient;
+
+            if (!$patient) {
+                abort(403, "Patient profile not found.");
+            }
+
+            $appointments = Appointment::with("doctor.user", "doctor.department")
+                ->where("patient_id", $patient->id)
+                ->latest()
+                ->paginate(10);
+
+            return view("patient.appointment.index", compact("appointments"));
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -30,9 +43,8 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
-            //
+        //
     }
-    
 
     /**
      * Display the specified resource.

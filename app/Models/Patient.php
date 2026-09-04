@@ -11,14 +11,13 @@ class Patient extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'appointment_id',
         'phone',
         'date_of_birth',
         'gender',
     ];
 
     protected $casts = [
-        'gender' => Gender::class,
+        // 'gender' => Gender::class,
     ];
 
     public function appointments()

@@ -8,6 +8,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\ReceptionistAppointmentController;
+use App\Http\Controllers\DoctorAppointmentController;
+use App\Http\Controllers\PatientAppointmentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,6 +21,7 @@ use App\Http\Controllers\DepartmentController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+// For ADMIN
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->group(function () {
@@ -34,26 +38,46 @@ Route::middleware(['auth', 'admin'])
         Route::resource('department', DepartmentController::class)
             ->names('admin.department');
     });
+
+// For DOCTOR
 Route::middleware(['auth', 'doctor', 'must.change.password'])->prefix('doctor')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('doctor.dashboard');
-    })->name('doctor.dashboard');
+   Route::get("/dashboard", function () {
+            return view("doctor.dashboard");
+        })->name("doctor.dashboard");
+
+        Route::resource("appointment", DoctorAppointmentController::class)
+            ->only(["index", "show", "update"])
+            ->names("doctor.appointment");
 });
+
+//PATIENT
 Route::middleware(['auth', 'patient', 'must.change.password'])->prefix('patient')->group(function () {
     Route::get('/dashboard', function () {
         return view('patient.dashboard');
     })->name('patient.dashboard');
+
+    Route::resource('appointment', PatientAppointmentController::class)
+        ->only(['index', 'show'])
+        ->names('patient.appointment');
 });
+
+//NURSE
 Route::middleware(['auth', 'nurse', 'must.change.password'])->prefix('nurse')->group(function () {
     Route::get('/dashboard', function () {
         return view('nurse.dashboard');
     })->name('nurse.dashboard');
 });
+
+//RECEPTIONIST
 Route::middleware(['auth', 'receptionist', 'must.change.password'])->prefix('receptionist')->group(function () {
     Route::get('/dashboard', function () {
         return view('receptionist.dashboard');
     })->name('receptionist.dashboard');
+    Route::resource('appointment', ReceptionistAppointmentController::class)
+        ->names('receptionist.appointment');
 });
+
+// PASSWORD
 Route::middleware("auth")->group(function () {
     Route::get("/change-password", [PasswordController::class, "edit"])
         ->name("password.change");
@@ -61,6 +85,8 @@ Route::middleware("auth")->group(function () {
     Route::post("/change-password", [PasswordController::class, "update"])
         ->name("password.update");
 });
+
+// AUTH
 Route::controller(AuthController::class)->group(function () {
     Route::get('/login', 'showLogin')->middleware('guest')->name('login');
     Route::post('/login', 'login')->middleware('guest');

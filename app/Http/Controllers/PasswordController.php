@@ -26,7 +26,7 @@ class PasswordController extends Controller
         ]);
 
         return redirect()->intended(
-            route($user->role . ".dashboard")
+            route($user->role->value . ".dashboard")
         );
     }
 }

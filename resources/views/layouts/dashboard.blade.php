@@ -1,308 +1,333 @@
 @extends("layouts.app")
 
 @php
-    use App\Enums\Role;
+use App\Enums\Role;
 @endphp
 
 @section("content")
 
 <div class="d-flex min-vh-100">
 
-    <!-- Sidebar -->
-    <aside
-        class="bg-white border-end flex-shrink-0"
-        style="width: 240px;"
-    >
+<!-- Sidebar -->
+<aside
+    class="bg-white border-end flex-shrink-0"
+    style="width: 240px;"
+>
 
-        <div class="p-3">
+    <div class="p-3">
 
-            <!-- Sidebar Header -->
-            <div class="mb-4">
+        <!-- Sidebar Header -->
+        <div class="mb-4">
 
-                <small class="text-muted text-uppercase fw-semibold">
-                    {{ ucfirst(auth()->user()->role->value) }}
-                </small>
+            <small class="text-muted text-uppercase fw-semibold">
+                {{ ucfirst(auth()->user()->role->value) }}
+            </small>
 
-                <h5 class="fw-semibold mb-0">
-                    Dashboard
-                </h5>
+            <h5 class="fw-semibold mb-0">
+                Dashboard
+            </h5>
 
-            </div>
+        </div>
 
 
-            <!-- Navigation -->
-            <nav>
+        <!-- Navigation -->
+        <nav>
 
-                <ul class="nav nav-pills flex-column gap-1">
+            <ul class="nav nav-pills flex-column gap-1">
 
-                    <!-- Dashboard -->
+                <!-- Dashboard -->
+                <li class="nav-item">
+
+                    <a
+                        href="{{ route(auth()->user()->role->value . '.dashboard') }}"
+                        class="nav-link {{ request()->routeIs(auth()->user()->role->value . '.dashboard') ? 'active' : 'text-dark' }}"
+                    >
+                        Dashboard
+                    </a>
+
+                </li>
+
+
+                {{-- ================= ADMIN ================= --}}
+                @if(auth()->user()->role === Role::ADMIN)
+
+                    <!-- Staff -->
                     <li class="nav-item">
 
                         <a
-                            href="{{ route(auth()->user()->role->value . '.dashboard') }}"
-                            class="nav-link {{ request()->routeIs(auth()->user()->role->value . '.dashboard') ? 'active' : 'text-dark' }}"
+                            href="{{ route("admin.staff.index") }}"
+                            class="nav-link {{ request()->routeIs("admin.staff.*") ? "active" : "text-dark" }}"
                         >
-                            Dashboard
+                            Staff
                         </a>
 
                     </li>
 
 
-                    {{-- ================= ADMIN ================= --}}
-                    @if(auth()->user()->role === Role::ADMIN)
+                    <!-- Patients -->
+                    <li class="nav-item">
 
-                        <!-- Staff -->
-                        <li class="nav-item">
+                        <a
+                            href="{{ route("admin.patient.index") }}"
+                            class="nav-link {{ request()->routeIs("admin.patient.*") ? "active" : "text-dark" }}"
+                        >
+                            Patients
+                        </a>
 
-                            <a
-                                href="{{ route("admin.staff.index") }}"
-                                class="nav-link {{ request()->routeIs("admin.staff.*") ? "active" : "text-dark" }}"
-                            >
-                                Staff
-                            </a>
+                    </li>
 
-                        </li>
 
+                    <!-- Appointments -->
+                    <li class="nav-item">
 
-                        <!-- Patients -->
-                        <li class="nav-item">
+                        <a
+                            href="{{ route("admin.appointment.index") }}"
+                            class="nav-link {{ request()->routeIs("admin.appointment.*") ? "active" : "text-dark" }}"
+                        >
+                            Appointments
+                        </a>
 
-                            <a
-                                href="{{ route("admin.patient.index") }}"
-                                class="nav-link {{ request()->routeIs("admin.patient.*") ? "active" : "text-dark" }}"
-                            >
-                                Patients
-                            </a>
+                    </li>
 
-                        </li>
 
+                    <!-- Departments -->
+                    <li class="nav-item">
 
-                        <!-- Appointments -->
-                        <li class="nav-item">
+                        <a
+                            href="{{ route("admin.department.index") }}"
+                            class="nav-link {{ request()->routeIs("admin.department.*") ? "active" : "text-dark" }}"
+                        >
+                            Departments
+                        </a>
 
-                            <a
-                                href="{{ route("admin.appointment.index") }}"
-                                class="nav-link {{ request()->routeIs("admin.appointment.*") ? "active" : "text-dark" }}"
-                            >
-                                Appointments
-                            </a>
+                    </li>
 
-                        </li>
 
+                {{-- ================= DOCTOR ================= --}}
+                @elseif(auth()->user()->role === Role::DOCTOR)
 
-                        <!-- Departments -->
-                        <li class="nav-item">
+                    <li class="nav-item">
 
-                            <a
-                                href="{{ route("admin.department.index") }}"
-                                class="nav-link {{ request()->routeIs("admin.department.*") ? "active" : "text-dark" }}"
-                            >
-                                Departments
-                            </a>
+                        <a href="{{ route("doctor.appointment.index") }}" class="nav-link text-dark">
+                            Appointments
+                        </a>
 
-                        </li>
+                    </li>
 
+                    <li class="nav-item">
 
-                    {{-- ================= DOCTOR ================= --}}
-                    @elseif(auth()->user()->role === Role::DOCTOR)
+                        <a href="#" class="nav-link text-dark">
+                            My Patients
+                        </a>
 
-                        <li class="nav-item">
+                    </li>
 
-                            <a href="#" class="nav-link text-dark">
-                                Appointments
-                            </a>
+                    <li class="nav-item">
 
-                        </li>
+                        <a href="#" class="nav-link text-dark">
+                            Medical Records
+                        </a>
 
-                        <li class="nav-item">
+                    </li>
 
-                            <a href="#" class="nav-link text-dark">
-                                My Patients
-                            </a>
+                    <li class="nav-item">
 
-                        </li>
+                        <a href="#" class="nav-link text-dark">
+                            Prescriptions
+                        </a>
 
-                        <li class="nav-item">
+                    </li>
 
-                            <a href="#" class="nav-link text-dark">
-                                Medical Records
-                            </a>
 
-                        </li>
+                {{-- ================= NURSE ================= --}}
+                @elseif(auth()->user()->role === Role::NURSE)
 
-                        <li class="nav-item">
+                    <li class="nav-item">
 
-                            <a href="#" class="nav-link text-dark">
-                                Prescriptions
-                            </a>
+                        <a href="#" class="nav-link text-dark">
+                            Assigned Patients
+                        </a>
 
-                        </li>
+                    </li>
 
+                    <li class="nav-item">
 
-                    {{-- ================= NURSE ================= --}}
-                    @elseif(auth()->user()->role === Role::NURSE)
+                        <a href="#" class="nav-link text-dark">
+                            Appointments
+                        </a>
 
-                        <li class="nav-item">
+                    </li>
 
-                            <a href="#" class="nav-link text-dark">
-                                Assigned Patients
-                            </a>
+                    <li class="nav-item">
 
-                        </li>
+                        <a href="#" class="nav-link text-dark">
+                            Patient Records
+                        </a>
 
-                        <li class="nav-item">
+                    </li>
 
-                            <a href="#" class="nav-link text-dark">
-                                Appointments
-                            </a>
 
-                        </li>
+                {{-- ================= RECEPTIONIST ================= --}}
+                @elseif(auth()->user()->role === Role::RECEPTIONIST)
 
-                        <li class="nav-item">
+                    <!-- Patients -->
+                    <li class="nav-item">
 
-                            <a href="#" class="nav-link text-dark">
-                                Patient Records
-                            </a>
+                        <a
+                            href="#"
+                            class="nav-link text-dark"
+                        >
+                            Patients
+                        </a>
 
-                        </li>
+                    </li>
 
 
-                    {{-- ================= RECEPTIONIST ================= --}}
-                    @elseif(auth()->user()->role === Role::RECEPTIONIST)
+                    <!-- Appointments -->
+                    <li class="nav-item">
 
-                        <li class="nav-item">
+                        <a
+                            href="{{ route("receptionist.appointment.index") }}"
+                            class="nav-link text-dark"
+                        >
+                            Appointments
+                        </a>
 
-                            <a href="#" class="nav-link text-dark">
-                                Patients
-                            </a>
+                    </li>
 
-                        </li>
 
-                        <li class="nav-item">
+                    <!-- Check-in -->
+                    <li class="nav-item">
 
-                            <a href="#" class="nav-link text-dark">
-                                Appointments
-                            </a>
+                        <a
+                            href="#"
+                            class="nav-link text-dark"
+                        >
+                            Check-in
+                        </a>
 
-                        </li>
+                    </li>
 
-                        <li class="nav-item">
 
-                            <a href="#" class="nav-link text-dark">
-                                Check-in
-                            </a>
+                    <!-- Billing -->
+                    <li class="nav-item">
 
-                        </li>
+                        <a
+                            href="#"
+                            class="nav-link text-dark"
+                        >
+                            Billing
+                        </a>
 
-                        <li class="nav-item">
+                    </li>
 
-                            <a href="#" class="nav-link text-dark">
-                                Billing
-                            </a>
 
-                        </li>
+                {{-- ================= PATIENT ================= --}}
+                @elseif(auth()->user()->role === Role::PATIENT)
 
+                    <!-- My Appointments -->
+                    <li class="nav-item">
 
-                    {{-- ================= PATIENT ================= --}}
-                    @elseif(auth()->user()->role === Role::PATIENT)
+                        <a
+                            href="{{ route("patient.appointment.index") }}"
+                            class="nav-link text-dark"
+                        >
+                            My Appointments
+                        </a>
 
-                        <li class="nav-item">
+                    </li>
 
-                            <a href="#" class="nav-link text-dark">
-                                Book Appointment
-                            </a>
 
-                        </li>
+                    <!-- Medical Records -->
+                    <li class="nav-item">
 
-                        <li class="nav-item">
+                        <a
+                            href="#"
+                            class="nav-link text-dark"
+                        >
+                            Medical Records
+                        </a>
 
-                            <a href="#" class="nav-link text-dark">
-                                My Appointments
-                            </a>
+                    </li>
 
-                        </li>
 
-                        <li class="nav-item">
+                    <!-- Prescriptions -->
+                    <li class="nav-item">
 
-                            <a href="#" class="nav-link text-dark">
-                                Medical Records
-                            </a>
+                        <a
+                            href="#"
+                            class="nav-link text-dark"
+                        >
+                            Prescriptions
+                        </a>
 
-                        </li>
+                    </li>
 
-                        <li class="nav-item">
+                @endif
 
-                            <a href="#" class="nav-link text-dark">
-                                Prescriptions
-                            </a>
+            </ul>
 
-                        </li>
+        </nav>
 
-                    @endif
+    </div>
 
-                </ul>
+</aside>
 
-            </nav>
 
-        </div>
+<!-- Main Dashboard Area -->
+<div
+    class="flex-grow-1 d-flex flex-column"
+    style="min-width: 0;"
+>
 
-    </aside>
+    <!-- Header -->
+    <header class="bg-white border-bottom px-4 py-3">
 
+        <div class="d-flex justify-content-between align-items-center">
 
-    <!-- Main Dashboard Area -->
-    <div
-        class="flex-grow-1 d-flex flex-column"
-        style="min-width: 0;"
-    >
+            <!-- Page Title -->
+            <div>
 
-        <!-- Header -->
-        <header class="bg-white border-bottom px-4 py-3">
+                <h4 class="mb-1 fw-semibold">
+                    @yield("page-title")
+                </h4>
 
-            <div class="d-flex justify-content-between align-items-center">
-
-                <!-- Page Title -->
-                <div>
-
-                    <h4 class="mb-1 fw-semibold">
-                        @yield("page-title")
-                    </h4>
-
-                    <small class="text-muted">
-                        Hospital Management System
-                    </small>
-
-                </div>
-
-
-                <!-- User Information -->
-                <div class="text-end">
-
-                    <div class="fw-medium">
-                        {{ auth()->user()->name }}
-                    </div>
-
-                    <small class="text-muted">
-                        {{ ucfirst(auth()->user()->role->value) }}
-                    </small>
-
-                </div>
+                <small class="text-muted">
+                    Hospital Management System
+                </small>
 
             </div>
 
-        </header>
+
+            <!-- User Information -->
+            <div class="text-end">
+
+                <div class="fw-medium">
+                    {{ auth()->user()->name }}
+                </div>
+
+                <small class="text-muted">
+                    {{ ucfirst(auth()->user()->role->value) }}
+                </small>
+
+            </div>
+
+        </div>
+
+    </header>
 
 
-        <!-- Page Content -->
-        <main
-            class="p-4 flex-grow-1"
-            style="min-width: 0;"
-        >
+    <!-- Page Content -->
+    <main
+        class="p-4 flex-grow-1"
+        style="min-width: 0;"
+    >
 
-            @yield("dashboard-content")
+        @yield("dashboard-content")
 
-        </main>
+    </main>
 
-    </div>
+</div>
 
 </div>
 

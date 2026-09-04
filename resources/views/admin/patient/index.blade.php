@@ -4,6 +4,10 @@
     Patients
 @endsection
 
+@php
+    use App\Enums\Gender;
+@endphp
+
 @section("dashboard-content")
 
 <div class="container-fluid px-0">
@@ -69,42 +73,37 @@
 
                                 <td class="px-4 text-nowrap">
                                     <div class="fw-medium">
-                                        {{ $patient->user->name ?? "N/A" }}
+                                        {{ $patient->user->name }}
                                     </div>
                                 </td>
 
                                 <td class="text-nowrap">
-                                    {{ $patient->phone ?? "N/A" }}
+                                    {{ $patient->phone }}
                                 </td>
 
                                 <td class="text-nowrap">
-                                    {{ $patient->date_of_birth ?? "N/A" }}
+                                    {{ $patient->date_of_birth  }}
                                 </td>
 
                                 <td class="text-nowrap">
-                                    {{ $patient->gender ?? "N/A" }}
+                                    {{ $patient->gender }}
                                 </td>
 
                                 <td class="text-nowrap">
 
-                                    <a
-                                        href="#"
+                                   <button
+                                        type="button"
                                         class="btn btn-sm btn-outline-primary"
-                                    >
-                                    <i class="fa-solid fa-eye"></i>
-                                        
-                                    </a>
-
-                                    <a
-                                        href="#"
-                                        class="btn btn-sm btn-outline-secondary"
-                                    >
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </a>
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#viewPatientModal-{{ $patient->id }}"
+                                    >   
+                                        <i class="fa-solid fa-eye"></i>
+                                   </button>
 
                                 </td>
 
                             </tr>
+                            @include("admin.patient.modals.view", ["patient" => $patient])
 
                         @empty
 
