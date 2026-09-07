@@ -7,6 +7,7 @@ use App\Models\Appointment;
 use App\Models\Patient;
 use App\Models\Doctor;
 use App\Http\Requests\StoreAppointmentRequest;
+use App\Notifications\AppointmentCreatedNotification;
 
 class ReceptionistAppointmentController extends Controller
 {
@@ -40,14 +41,14 @@ class ReceptionistAppointmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-   public function store(StoreAppointmentRequest $request)
+    public function store(StoreAppointmentRequest $request)
     {
-            $validated = $request->validated();
+        $validated = $request->validated();
 
         $alreadyBooked = Appointment::where("doctor_id", $validated["doctor_id"])
             ->where("appointment_date", $validated["appointment_date"])
             ->where("appointment_time", $validated["appointment_time"])
-            ->whereIn("status", ["pending", "approved"])
+            ->whereIn("status", ["pending", "confirmed"])
             ->exists();
 
         if ($alreadyBooked) {
@@ -59,11 +60,19 @@ class ReceptionistAppointmentController extends Controller
                 ]);
         }
 
-        Appointment::create($validated);
+        $appointment = Appointment::create($validated);
+        $appointment->load('patient.user', 'doctor.user');
+
+        // Notify the doctor via email
+        if ($appointment->doctor && $appointment->doctor->user) {
+            $appointment->doctor->user->notify(
+                new AppointmentCreatedNotification($appointment)
+            );
+        }
 
         return redirect()
             ->route("receptionist.appointment.index")
-            ->with("success", "Appointment created successfully.");
+            ->with("success", "Appointment created successfully. Doctor has been notified.");
     }
 
     /**

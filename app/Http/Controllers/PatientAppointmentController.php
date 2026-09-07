@@ -12,23 +12,22 @@ class PatientAppointmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    
     public function index()
     {
-            $patient = auth()->user()->patient;
+        $patient = auth()->user()->patient;
 
-            if (!$patient) {
-                abort(403, "Patient profile not found.");
-            }
+        if (!$patient) {
+            abort(403, "Patient profile not found.");
+        }
 
-            $appointments = Appointment::with("doctor.user", "doctor.department")
-                ->where("patient_id", $patient->id)
-                ->latest()
-                ->paginate(10);
+        $appointments = Appointment::with("doctor.user", "doctor.department")
+            ->where("patient_id", $patient->id)
+            ->latest()
+            ->paginate(10);
 
-            return view("patient.appointment.index", compact("appointments"));
+        return view("patient.appointment.index", compact("appointments"));
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -51,7 +50,17 @@ class PatientAppointmentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $patient = auth()->user()->patient;
+
+        if (!$patient) {
+            abort(403, "Patient profile not found.");
+        }
+
+        $appointment = Appointment::with("doctor.user", "doctor.department")
+            ->where("patient_id", $patient->id)
+            ->findOrFail($id);
+
+        return view("patient.appointment.show", compact("appointment"));
     }
 
     /**

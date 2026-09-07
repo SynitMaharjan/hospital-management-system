@@ -3,11 +3,12 @@
 namespace App\Notifications;
 
 use App\Models\Appointment;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AppointmentStatusUpdatedNotification extends Notification
+class AppointmentStatusUpdatedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -18,22 +19,44 @@ class AppointmentStatusUpdatedNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return ["mail"];
+        return ['mail'];
     }
 
     public function toMail(object $notifiable): MailMessage
     {
         $status = $this->appointment->status->value;
+        $statusLabel = ucfirst($status);
+        $actionText = match ($status) {
+            'confirmed' => 'approved and confirmed',
+            'cancelled' => 'cancelled',
+            'completed' => 'marked as completed',
+            default => "updated to {$statusLabel}",
+        };
 
         return (new MailMessage)
-            ->subject("Appointment Status Updated")
+            ->subject("Appointment {$statusLabel}")
             ->greeting("Hello {$notifiable->name},")
-            ->line("Your appointment status has been updated.")
-            ->line("Doctor: {$this->appointment->doctor->user->name}")
+            ->line("Your appointment has been {$actionText} by Dr. {$this->appointment->doctor->user->name}.")
+            ->line("**Appointment Details:**")
+            ->line("Doctor: Dr. {$this->appointment->doctor->user->name}")
             ->line("Date: {$this->appointment->appointment_date}")
             ->line("Time: {$this->appointment->appointment_time}")
-            ->line("Status: " . ucfirst($status))
             ->line("Reason: {$this->appointment->reason}")
-            ->line("Please check your hospital account for more details.");
+            ->line("Status: {$statusLabel}")
+            ->when($status === 'confirmed', fn ($msg) => $msg->line('Please arrive 15 minutes before your scheduled time.'))
+            ->when($status === 'cancelled', fn ($msg) => $msg->line('You may book a new appointment at your convenience.'))
+            ->action('View Appointment', url("/patient/appointment/{$this->appointment->id}"))
+            ->line('Thank you for using our hospital management system.');
+    }
+
+    public function toArray(object $notifiable): array
+    {
+        return [
+            'appointment_id' => $this->appointment->id,
+            'doctor_name' => $this->appointment->doctor->user->name,
+            'appointment_date' => $this->appointment->appointment_date->format('Y-m-d'),
+            'appointment_time' => $this->appointment->appointment_time->format('H:i'),
+            'status' => $this->appointment->status->value,
+        ];
     }
 }

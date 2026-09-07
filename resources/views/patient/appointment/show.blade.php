@@ -6,7 +6,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4>Appointment Details</h4>
-    <a href="{{ route('doctor.appointment.index') }}" class="btn btn-outline-secondary">
+    <a href="{{ route('patient.appointment.index') }}" class="btn btn-outline-secondary">
         <i class="fas fa-arrow-left me-1"></i> Back to Appointments
     </a>
 </div>
@@ -35,23 +35,12 @@
 
         <div class="row mb-3">
             <div class="col-md-6">
-                <label class="form-label text-muted fw-bold">Patient</label>
-                <div class="fw-medium">{{ $appointment->patient->user->name }}</div>
+                <label class="form-label text-muted fw-bold">Doctor</label>
+                <div class="fw-medium">Dr. {{ $appointment->doctor->user->name }}</div>
             </div>
             <div class="col-md-6">
-                <label class="form-label text-muted fw-bold">Patient Email</label>
-                <div>{{ $appointment->patient->user->email }}</div>
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="form-label text-muted fw-bold">Patient Phone</label>
-                <div>{{ $appointment->patient->phone ?? 'Not provided' }}</div>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label text-muted fw-bold">Date of Birth</label>
-                <div>{{ $appointment->patient->date_of_birth?->format('F d, Y') ?? 'Not provided' }}</div>
+                <label class="form-label text-muted fw-bold">Department</label>
+                <div>{{ $appointment->doctor->department->name }}</div>
             </div>
         </div>
 
@@ -71,28 +60,10 @@
             <div>{{ $appointment->reason }}</div>
         </div>
 
-        @if($appointment->status->value === 'pending')
-        <hr>
-        <div class="d-flex gap-2">
-            <form action="{{ route('doctor.appointment.update', $appointment->id) }}" method="POST">
-                @csrf
-                @method('PUT')
-                <input type="hidden" name="status" value="confirmed">
-                <button type="submit" class="btn btn-success">
-                    <i class="fas fa-check me-1"></i> Confirm Appointment
-                </button>
-            </form>
-
-            <form action="{{ route('doctor.appointment.update', $appointment->id) }}" method="POST">
-                @csrf
-                @method('PUT')
-                <input type="hidden" name="status" value="cancelled">
-                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this appointment?')">
-                    <i class="fas fa-times me-1"></i> Cancel Appointment
-                </button>
-            </form>
+        <div class="mb-3">
+            <label class="form-label text-muted fw-bold">Created At</label>
+            <div class="text-muted">{{ $appointment->created_at->format('F d, Y h:i A') }}</div>
         </div>
-        @endif
     </div>
 </div>
 
