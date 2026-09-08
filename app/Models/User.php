@@ -26,6 +26,7 @@ class User extends Authenticatable
         'password',
         'role',
         'must_change_password',
+        'profile_picture',
     ];
 
     /**
@@ -37,7 +38,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
+//appends 
     /**
      * The attributes that should be cast.
      *
@@ -61,5 +62,18 @@ class User extends Authenticatable
     public function nurse()
     {
         return $this->hasOne(Nurse::class);
+    }
+    
+    public function getProfilePictureUrlAttribute(): string
+    {
+        if (!$this->profile_picture) {
+            return asset('images/default-profile.jpg');
+        }
+
+        if (!file_exists(public_path('storage/' . $this->profile_picture))) {
+            return asset('images/default-profile.jpg');
+        }
+
+        return asset('storage/' . $this->profile_picture);
     }
 }

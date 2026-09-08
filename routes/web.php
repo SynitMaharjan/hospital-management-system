@@ -11,6 +11,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ReceptionistAppointmentController;
 use App\Http\Controllers\DoctorAppointmentController;
 use App\Http\Controllers\PatientAppointmentController;
+use App\Http\Controllers\ProfileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -84,6 +85,11 @@ Route::middleware("auth")->group(function () {
 
     Route::post("/change-password", [PasswordController::class, "update"])
         ->name("password.update");
+    
+    Route::get("/profile", [ProfileController::class, "show"])
+        ->name("profile.show");
+    Route::post("/profile", [ProfileController::class, "update"])
+        ->name("profile.picture.update");
 });
 
 // AUTH
