@@ -4,9 +4,18 @@
     Staff Management
 @endsection
 
-@section("dashboard-content")
 
+@section("dashboard-content")
+<div id="staff-page"
+    data-validation-errors="{{ $errors->any() ? 'true' : 'false' }}"
+> 
+
+    {{-- Create Staff Modal --}}
     @include("admin.staff.modals.create-from")
+
+    {{-- Staff Created / Credentials Modal --}}
+    @include("admin.staff.modals.created")
+
 
     <div class="container-fluid px-0">
 
@@ -14,6 +23,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
 
             <div>
+
                 <h2 class="fw-semibold mb-1">
                     Staff Management
                 </h2>
@@ -21,7 +31,9 @@
                 <p class="text-muted mb-0">
                     Manage hospital staff accounts
                 </p>
+
             </div>
+
 
             <!-- Create Staff Button -->
             <button
@@ -44,6 +56,8 @@
                 class="alert alert-success alert-dismissible fade show"
                 role="alert"
             >
+
+                <i class="fa-solid fa-circle-check me-2"></i>
 
                 {{ session("success") }}
 
@@ -165,34 +179,37 @@
                                     <!-- Actions -->
                                     <td class="text-nowrap">
 
-                                        <!-- View Button -->
+                                        <!-- View -->
                                         <button
                                             type="button"
                                             class="btn btn-sm btn-primary"
                                             data-bs-toggle="modal"
                                             data-bs-target="#viewStaffModal{{ $member->id }}"
+                                            title="View Staff"
                                         >
                                             <i class="fa-solid fa-eye"></i>
                                         </button>
-                                        
-                                        
-                                        <!-- Edit Button -->
+
+
+                                        <!-- Edit -->
                                         <button
                                             type="button"
                                             class="btn btn-sm btn-primary"
                                             data-bs-toggle="modal"
                                             data-bs-target="#editStaffModal{{ $member->id }}"
+                                            title="Edit Staff"
                                         >
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
-                                        
 
-                                        <!-- Delete Button -->
+
+                                        <!-- Delete -->
                                         <button
                                             type="button"
                                             class="btn btn-sm btn-outline-danger"
                                             data-bs-toggle="modal"
                                             data-bs-target="#deleteStaffModal{{ $member->id }}"
+                                            title="Delete Staff"
                                         >
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
@@ -202,10 +219,11 @@
                                 </tr>
 
 
-                                <!-- View Staff Modal -->
+                                <!-- Staff Modals -->
                                 @include("admin.staff.modals.view")
                                 @include("admin.staff.modals.edit")
                                 @include("admin.staff.modals.delete")
+
 
                             @empty
 
@@ -215,7 +233,15 @@
                                         colspan="7"
                                         class="text-center py-5 text-muted"
                                     >
-                                        No staff accounts found.
+
+                                        <div class="mb-2">
+                                            <i class="fa-solid fa-users fa-2x"></i>
+                                        </div>
+
+                                        <div>
+                                            No staff accounts found.
+                                        </div>
+
                                     </td>
 
                                 </tr>
@@ -245,5 +271,8 @@
         </div>
 
     </div>
+</div>
+
+@vite("resources/js/staff.js")
 
 @endsection

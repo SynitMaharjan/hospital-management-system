@@ -18,7 +18,7 @@ class Patient extends Model
 
     protected $casts = [
         'date_of_birth' => 'date',
-        // 'gender' => Gender::class,
+        'gender' => Gender::class,
     ];
 
     public function appointments()

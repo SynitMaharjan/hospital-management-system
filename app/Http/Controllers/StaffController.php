@@ -54,10 +54,16 @@ class StaffController extends Controller
             "must_change_password" => true,
         ]);
 
-        return view("admin.staff.created", [
-            "staff" => $staff,
-            "temporaryPassword" => $temporaryPassword,
-        ]);
+        return redirect()->route("admin.staff.index")
+            ->with("success", "Staff created successfully.")
+            ->with("created_staff", [
+                "name" => $staff->name,
+                "username" => $staff->username,
+                "employee_id" => $staff->employee_id,
+                "email" => $staff->email,
+                "role" => $staff->role,
+                "temporary_password" => $temporaryPassword,
+            ]);
     }
 
     /**
