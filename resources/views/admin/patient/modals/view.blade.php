@@ -133,7 +133,7 @@
                             </div>
 
                             <div class="col-md-8">
-                                {{ ucfirst($patient->gender) }}
+                                {{ ucfirst($patient->gender->value) }}
                             </div>
 
                         </div>

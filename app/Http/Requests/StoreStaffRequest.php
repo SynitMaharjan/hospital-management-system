@@ -4,7 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
-use app\Enums\Role;
+use App\Enums\Role;
+use Illuminate\Validation\Rule;
 
 class StoreStaffRequest extends FormRequest
 {
@@ -24,20 +25,74 @@ class StoreStaffRequest extends FormRequest
     public function rules(): array
     {
         return [
-           
-            "name" => "required|string|max:255",
 
-            "username" => "required|string|max:255|unique:users,username",
+            // Common user fields
+            "name" => [
+                "required",
+                "string",
+                "max:255",
+            ],
 
-            "employee_id" => "required|string|max:255|unique:users,employee_id",
+            "username" => [
+                "required",
+                "string",
+                "max:255",
+                "unique:users,username",
+            ],
 
-            "email" => "required|email|unique:users,email",
+            "employee_id" => [
+                "required",
+                "string",
+                "max:255",
+                "unique:users,employee_id",
+            ],
+
+            "email" => [
+                "required",
+                "email",
+                "unique:users,email",
+            ],
 
             "role" => [
-                        "required",
-                        new Enum(Role::class),
-                    ],
-    
+                "required",
+                new Enum(Role::class),
+            ],
+
+            // Common staff profile field
+            "phone" => [
+                "required",
+                "string",
+                "max:20",
+            ],
+
+            // Required for Doctor and Nurse
+            "department_id" => [
+                Rule::requiredIf(
+                    fn () =>
+                        in_array($this->role, [
+                            Role::DOCTOR->value,
+                            Role::NURSE->value,
+                        ])
+                ),
+                "nullable",
+                "exists:departments,id",
+            ],
+
+            // Doctor only
+            "specialization" => [
+                Rule::requiredIf(fn () => $this->role === Role::DOCTOR->value),
+                "nullable",
+                "string",
+                "max:255",
+            ],
+
+            "license_number" => [
+                Rule::requiredIf(fn () => $this->role === Role::DOCTOR->value),
+                "nullable",
+                "string",
+                "max:100",
+                "unique:doctors,license_number",
+            ],
         ];
     }
 }

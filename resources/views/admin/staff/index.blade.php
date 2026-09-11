@@ -4,11 +4,14 @@
     Staff Management
 @endsection
 
-
 @section("dashboard-content")
 <div id="staff-page"
     data-validation-errors="{{ $errors->any() ? 'true' : 'false' }}"
 > 
+<div
+    id="staff-created"
+    data-created="{{ session('created_staff') ? 'true' : 'false' }}"
+></div>
 
     {{-- Create Staff Modal --}}
     @include("admin.staff.modals.create-from")

@@ -86,7 +86,7 @@
                                 </td>
 
                                 <td class="text-nowrap">
-                                    {{ $patient->gender }}
+                                    {{ $patient->gender}}
                                 </td>
 
                                 <td class="text-nowrap">

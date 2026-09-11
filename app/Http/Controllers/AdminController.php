@@ -2,32 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Department;
+use App\Services\AdminDashboardService;
 
 class AdminController extends Controller
 {
+    public function __construct(
+        protected AdminDashboardService $dashboardService
+    ) {}
+
     public function dashboard()
     {
-        $totalStaff = User::whereIn("role", [
-            "doctor",
-            "nurse",
-            "receptionist",
-        ])->count();
+        $stats = $this->dashboardService->getStatistics();
 
-        $totalDoctors = User::where("role", "doctor")->count();
+        $departments = Department::orderBy('name')->get();
 
-        $totalNurses = User::where("role", "nurse")->count();
-
-        $totalReceptionists = User::where("role", "receptionist")->count();
-
-        $totalPatients = User::where("role", "patient")->count();
-
-        return view("admin.dashboard", compact(
-            "totalStaff",
-            "totalDoctors",
-            "totalNurses",
-            "totalReceptionists",
-            "totalPatients"
-        ));
+        return view('admin.dashboard', [
+            'totalStaff' => $stats['totalStaff'],
+            'totalDoctors' => $stats['totalDoctors'],
+            'totalNurses' => $stats['totalNurses'],
+            'totalReceptionists' => $stats['totalReceptionists'],
+            'totalPatients' => $stats['totalPatients'],
+            'departments' => $departments,
+        ]);
     }
 }

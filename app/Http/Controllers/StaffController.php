@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Role;
 use App\Http\Requests\StoreStaffRequest;
 use App\Http\Requests\UpdateStaffRequest;
 use App\Models\User;
-use App\Enums\Role;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use App\Services\StaffService;
+use App\Services\DepartmentService;
 
 class StaffController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct(
+        private StaffService $staffService,
+        private DepartmentService $departmentService
+    ) {}
+
     public function index()
     {
         $staff = User::whereIn("role", [
@@ -24,87 +26,68 @@ class StaffController extends Controller
         ->latest()
         ->paginate(10);
 
-        return view("admin.staff.index", compact("staff"));
+        $departments = $this->departmentService->getAllDepartments();
+
+        return view("admin.staff.index", compact(
+            "staff",
+            "departments"
+        ));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view("admin.staff.create");
+        $departments = $this->departmentService->getAllDepartments();
+
+        return view("admin.staff.create", compact("departments"));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreStaffRequest $request)
     {
-        $data = $request->validated();
+        $staff = $this->staffService->createStaff(
+            $request->validated()
+        );
 
-        $temporaryPassword = Str::password(12);
-
-        $staff = User::create([
-            "name" => $data["name"],
-            "username" => $data["username"],
-            "employee_id" => $data["employee_id"],
-            "email" => $data["email"],
-            "password" => Hash::make($temporaryPassword),
-            "role" => $data["role"],
-            "must_change_password" => true,
-        ]);
-
-        return redirect()->route("admin.staff.index")
-            ->with("success", "Staff created successfully.")
-            ->with("created_staff", [
-                "name" => $staff->name,
-                "username" => $staff->username,
-                "employee_id" => $staff->employee_id,
-                "email" => $staff->email,
-                "role" => $staff->role,
-                "temporary_password" => $temporaryPassword,
-            ]);
+        return redirect()
+            ->route("admin.staff.index")
+            ->with("created_staff", $staff);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(User $staff)
     {
         return view("admin.staff.show", compact("staff"));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(User $staff)
     {
         return view("admin.staff.edit", compact("staff"));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateStaffRequest $request, User $staff)
-    {
-        $data = $request->validated();
-
-        $staff->update($data);
+    public function update(
+        UpdateStaffRequest $request,
+        User $staff
+    ) {
+        $this->staffService->updateStaff(
+            $staff,
+            $request->validated()
+        );
 
         return redirect()
             ->route("admin.staff.index")
-            ->with("success", "Staff updated successfully.");
+            ->with(
+                "success",
+                "Staff updated successfully."
+            );
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(User $staff)
     {
-        $staff->delete();
+        $this->staffService->deleteStaff($staff);
 
         return redirect()
             ->route("admin.staff.index")
-            ->with("success", "Staff deleted successfully.");
+            ->with(
+                "success",
+                "Staff deleted successfully."
+            );
     }
 }

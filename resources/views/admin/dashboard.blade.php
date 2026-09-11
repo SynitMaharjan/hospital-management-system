@@ -146,5 +146,6 @@
         </div>
 
     </div>
+    @vite("resources/js/staff.js")
 
 @endsection

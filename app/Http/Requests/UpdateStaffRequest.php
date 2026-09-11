@@ -9,28 +9,125 @@ use App\Enums\Role;
 
 class UpdateStaffRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            "name" => "required|string|max:255",
 
-            "email" => ["required", "email", Rule::unique("users", "email")
-                    ->ignore($this->staff),],
+            /*
+            |--------------------------------------------------------------------------
+            | Common User Fields
+            |--------------------------------------------------------------------------
+            */
 
-            "role" => ["required", new Enum(Role::class),]
+            "name" => [
+                "required",
+                "string",
+                "max:255",
+            ],
+
+            "username" => [
+                "required",
+                "string",
+                "max:255",
+
+                Rule::unique("users", "username")
+                    ->ignore($this->staff->id),
+            ],
+
+            "employee_id" => [
+                "required",
+                "string",
+                "max:255",
+
+                Rule::unique("users", "employee_id")
+                    ->ignore($this->staff->id),
+            ],
+
+            "email" => [
+                "required",
+                "email",
+
+                Rule::unique("users", "email")
+                    ->ignore($this->staff->id),
+            ],
+
+            "role" => [
+                "required",
+                new Enum(Role::class),
+
+                Rule::in([
+                    Role::DOCTOR->value,
+                    Role::NURSE->value,
+                    Role::RECEPTIONIST->value,
+                ]),
+            ],
+
+            "phone" => [
+                "required",
+                "string",
+                "max:20",
+            ],
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Department
+            |--------------------------------------------------------------------------
+            */
+
+            "department_id" => [
+                Rule::requiredIf(
+                    fn () =>
+                        in_array($this->role, [
+                            Role::DOCTOR->value,
+                            Role::NURSE->value,
+                        ])
+                ),
+
+                "nullable",
+                "exists:departments,id",
+            ],
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Doctor Fields
+            |--------------------------------------------------------------------------
+            */
+
+            "specialization" => [
+                Rule::requiredIf(
+                    fn () =>
+                        $this->role === Role::DOCTOR->value
+                ),
+
+                "nullable",
+                "string",
+                "max:255",
+            ],
+
+            "license_number" => [
+                Rule::requiredIf(
+                    fn () =>
+                        $this->role === Role::DOCTOR->value
+                ),
+
+                "nullable",
+                "string",
+                "max:100",
+
+                Rule::unique(
+                    "doctors",
+                    "license_number"
+                )->ignore(
+                    $this->staff->doctor?->id
+                ),
+            ],
         ];
     }
 }

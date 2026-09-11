@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('user_id')
+                ->unique()
                 ->constrained('users')->restrictOnDelete();
             $table->foreignId('department_id')
                 ->constrained('departments')->restrictOnDelete();
