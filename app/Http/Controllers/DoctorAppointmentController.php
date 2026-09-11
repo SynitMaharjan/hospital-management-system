@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use Illuminate\Http\Request;
-
-use App\Notifications\AppointmentStatusUpdatedNotification;
+use App\Services\AppointmentService;
 
 class DoctorAppointmentController extends Controller
 {
+    public function __construct(
+        protected AppointmentService $appointmentService
+    ) {
+    }
+
     public function index()
     {
         $doctor = auth()->user()->doctor;
@@ -55,18 +59,13 @@ class DoctorAppointmentController extends Controller
             "status" => "required|in:confirmed,cancelled",
         ]);
 
-        $appointment->update([
-            "status" => $validated["status"],
-        ]);
-
-        $appointment->load("patient.user", "doctor.user");
-
-        $appointment->patient->user->notify(
-            new AppointmentStatusUpdatedNotification($appointment)
+        $this->appointmentService->updateStatus(
+            $appointment,
+            $validated["status"]
         );
 
         return redirect()
             ->route("doctor.appointment.show", $appointment->id)
             ->with("success", "Appointment status updated successfully.");
-        }
     }
+}

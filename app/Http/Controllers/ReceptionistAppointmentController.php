@@ -7,10 +7,13 @@ use App\Models\Appointment;
 use App\Models\Patient;
 use App\Models\Doctor;
 use App\Http\Requests\StoreAppointmentRequest;
-use App\Notifications\AppointmentCreatedNotification;
+use App\Services\AppointmentService;        
 
 class ReceptionistAppointmentController extends Controller
 {
+    public function __construct(protected AppointmentService $appointmentService)
+    {
+    }
     /**
      * Display a listing of the resource.
      */
@@ -43,38 +46,17 @@ class ReceptionistAppointmentController extends Controller
      */
     public function store(StoreAppointmentRequest $request)
     {
-        $validated = $request->validated();
-
-        $alreadyBooked = Appointment::where("doctor_id", $validated["doctor_id"])
-            ->where("appointment_date", $validated["appointment_date"])
-            ->where("appointment_time", $validated["appointment_time"])
-            ->whereIn("status", ["pending", "confirmed"])
-            ->exists();
-
-        if ($alreadyBooked) {
-            return back()
-                ->withInput()
-                ->withErrors([
-                    "appointment_time" =>
-                        "The doctor already has an appointment at this date and time.",
-                ]);
-        }
-
-        $appointment = Appointment::create($validated);
-        $appointment->load('patient.user', 'doctor.user');
-
-        // Notify the doctor via email
-        if ($appointment->doctor && $appointment->doctor->user) {
-            $appointment->doctor->user->notify(
-                new AppointmentCreatedNotification($appointment)
-            );
-        }
+        $this->appointmentService->create(
+            $request->validated()
+        );
 
         return redirect()
             ->route("receptionist.appointment.index")
-            ->with("success", "Appointment created successfully. Doctor has been notified.");
+            ->with(
+                "success",
+                "Appointment created successfully. Doctor has been notified."
+            );
     }
-
     /**
      * Display the specified resource.
      */
