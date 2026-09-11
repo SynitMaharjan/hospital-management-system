@@ -75,6 +75,164 @@
 
         @endif
 
+       
+        {{-- Search & Filters --}}
+
+        <form
+            method="GET"
+            action="{{ route('admin.staff.index') }}"
+            class="d-flex flex-wrap align-items-center gap-2 mb-4"
+        >
+
+            {{-- Search --}}
+            <div
+                class="input-group"
+                style="max-width: 500px;"
+            >
+                <span class="input-group-text bg-white border-end-0">
+                    <i class="fa-solid fa-magnifying-glass text-muted"></i>
+                </span>
+
+                <input
+                    type="text"
+                    name="search"
+                    class="form-control border-start-0 ps-0"
+                    placeholder="Search staff..."
+                    value="{{ request('search') }}"
+                    autocomplete="off"
+                >
+            </div>
+
+
+            {{-- Filter Dropdown --}}
+            <div class="dropdown">
+
+                <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    title="Filter"
+                >
+                    <i class="fa-solid fa-filter me-1"></i>
+                    Filter
+                </button>
+
+
+                <div
+                    class="dropdown-menu p-3 shadow-sm border-0"
+                    style="min-width: 240px;"
+                >
+
+                    <div class="fw-semibold mb-2">
+                        Filter Staff
+                    </div>
+
+                    <label
+                        for="role"
+                        class="form-label small text-muted mb-1"
+                    >
+                        Role
+                    </label>
+
+                    <select
+                        name="role"
+                        id="role"
+                        class="form-select form-select-sm"
+                    >
+
+                        <option value="">
+                            All Roles
+                        </option>
+
+                        <option
+                            value="doctor"
+                            {{ request('role') === 'doctor' ? 'selected' : '' }}
+                        >
+                            Doctor
+                        </option>
+
+                        <option
+                            value="nurse"
+                            {{ request('role') === 'nurse' ? 'selected' : '' }}
+                        >
+                            Nurse
+                        </option>
+
+                        <option
+                            value="receptionist"
+                            {{ request('role') === 'receptionist' ? 'selected' : '' }}
+                        >
+                            Receptionist
+                        </option>
+
+                    </select>
+
+                        <label
+                            for="department"
+                            class="form-label small text-muted mb-1 mt-3"
+
+                        >
+                            Department
+                       </label>
+
+                        <select
+                            name="department"
+                            id="department"
+                            class="form-select form-select-sm"
+
+                        >
+
+
+                        <option value="">
+                            All Departments
+                        </option>
+
+                        @foreach($departments as $department)
+
+                            <option
+                                value="{{ $department->id }}"
+                                {{ request('department') == $department->id ? 'selected' : '' }}
+                            >
+                                {{ $department->name }}
+                            </option>
+
+                            @endforeach
+                    
+
+                        </select>
+
+
+                </div>
+
+            </div>
+
+
+            {{-- Search Button --}}
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                <i class="fa-solid fa-magnifying-glass me-1"></i>
+                Search
+            </button>
+
+
+            {{-- Clear --}}
+            @if(request()->hasAny(['search', 'role', 'department']))
+
+                <a
+                    href="{{ route('admin.staff.index') }}"
+                    class="btn btn-outline-secondary"
+                    title="Clear search and filters"
+                >
+                    <i class="fa-solid fa-xmark me-1"></i>
+                    Clear
+                </a>
+
+            @endif
+
+        </form>
 
         <!-- Staff Table Card -->
         <div class="card border-0 shadow-sm">

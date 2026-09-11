@@ -18,13 +18,52 @@ class StaffController extends Controller
 
     public function index()
     {
-        $staff = User::whereIn("role", [
+        $query = User::whereIn("role", [
             Role::DOCTOR->value,
             Role::NURSE->value,
             Role::RECEPTIONIST->value,
-        ])
-        ->latest()
-        ->paginate(10);
+        ]);
+
+        // Search
+        if (request("search")) {
+            $search = request("search");
+
+            $query->where(function ($q) use ($search) {
+                $q->where("name", "ilike", "%{$search}%")
+                    ->orWhere("username", "ilike", "%{$search}%")
+                    ->orWhere("email", "ilike", "%{$search}%")
+                    ->orWhere("employee_id", "ilike", "%{$search}%");
+            });
+        }
+
+        // Role filter
+        if (request("role")) {
+            $query->where("role", request("role"));
+        }
+                // Department filter
+        if (request("department")) {
+
+        $departmentId = request("department");
+
+        $query->where(function ($q) use ($departmentId) {
+
+            $q->whereHas("doctor", function ($q) use ($departmentId) {
+                $q->where("department_id", $departmentId);
+            })
+
+            ->orWhereHas("nurse", function ($q) use ($departmentId) {
+                $q->where("department_id", $departmentId);
+            });
+
+        });
+
+        }
+
+
+        $staff = $query
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
 
         $departments = $this->departmentService->getAllDepartments();
 

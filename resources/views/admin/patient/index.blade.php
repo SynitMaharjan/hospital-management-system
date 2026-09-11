@@ -27,6 +27,122 @@
 
     </div>
 
+        
+    {{-- Search & Filters --}}
+    <form
+        method="GET"
+        action="{{ route('admin.patient.index') }}"
+        class="d-flex flex-wrap align-items-center gap-2 mb-4"
+    >
+
+        {{-- Search --}}
+        <div
+            class="input-group"
+            style="max-width: 500px;"
+        >
+
+            <span class="input-group-text bg-white border-end-0">
+                <i class="fa-solid fa-magnifying-glass text-muted"></i>
+            </span>
+
+            <input
+                type="text"
+                name="search"
+                class="form-control border-start-0 ps-0"
+                placeholder="Search patients..."
+                value="{{ request('search') }}"
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        {{-- Filter Dropdown --}}
+        <div class="dropdown">
+
+            <button
+                type="button"
+                class="btn btn-outline-secondary"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                title="Filter"
+            >
+                <i class="fa-solid fa-filter me-1"></i>
+                Filter
+            </button>
+
+
+            <div
+                class="dropdown-menu p-3 shadow-sm border-0"
+                style="min-width: 240px;"
+            >
+
+                <div class="fw-semibold mb-2">
+                    Filter Patients
+                </div>
+
+
+                <label
+                    for="gender"
+                    class="form-label small text-muted mb-1"
+                >
+                    Gender
+                </label>
+
+                <select
+                    name="gender"
+                    id="gender"
+                    class="form-select form-select-sm"
+                >
+
+                    <option value="">
+                        All Genders
+                    </option>
+
+                    @foreach(Gender::cases() as $gender)
+
+                        <option
+                            value="{{ $gender->value }}"
+                            {{ request('gender') === $gender->value ? 'selected' : '' }}
+                        >
+                            {{ ucfirst($gender->value) }}
+                        </option>
+
+                    @endforeach
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        {{-- Search Button --}}
+        <button
+            type="submit"
+            class="btn btn-primary"
+        >
+            <i class="fa-solid fa-magnifying-glass me-1"></i>
+            Search
+        </button>
+
+
+        {{-- Clear --}}
+        @if(request()->hasAny(['search', 'gender']))
+
+            <a
+                href="{{ route('admin.patient.index') }}"
+                class="btn btn-outline-secondary"
+                title="Clear search and filters"
+            >
+                <i class="fa-solid fa-xmark me-1"></i>
+                Clear
+            </a>
+
+        @endif
+    </form>
+
+
 
     <!-- Patient Table Card -->
     <div class="card border-0 shadow-sm">

@@ -4,18 +4,54 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient;
 use Illuminate\Http\Request;
-use App\Models\User;
 
 class PatientController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+   public function index()
     {
-        $patients = Patient::with('user')->latest()->paginate(10);
-        
-        return view('admin.patient.index', compact('patients'));
+        $query = Patient::with('user');
+
+        // Search
+        if (request('search')) {
+
+            $search = request('search');
+
+            $query->where(function ($q) use ($search) {
+
+                $q->where('phone', 'ilike', "%{$search}%")
+                    ->orWhereHas('user', function ($q) use ($search) {
+
+                        $q->where('name', 'ilike', "%{$search}%")
+                            ->orWhere('username', 'ilike', "%{$search}%")
+                            ->orWhere('email', 'ilike', "%{$search}%");
+
+                    });
+
+            });
+        }
+
+        // Gender filter
+        if (request('gender')) {
+
+            $query->where(
+                'gender',
+                request('gender')
+            );
+        }
+
+        $patients = $query
+            ->latest()
+            ->paginate(10);
+
+        $patients->appends(request()->query());
+
+        return view(
+            'admin.patient.index',
+            compact('patients')
+        );
     }
 
     /**
