@@ -168,14 +168,14 @@ Departments
 
 
                                     <!-- Delete Button -->
-                                        <button
-                                            type="submit"
-                                            class="btn btn-sm btn-outline-danger"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#deleteDepartmentModal{{ $department->id }}"
-                                        >
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
+                                    <button
+                                        type="submit"
+                                        class="btn btn-sm btn-outline-danger"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteDepartmentModal{{ $department->id }}"
+                                    >
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
 
                                 </td>
 
@@ -188,6 +188,9 @@ Departments
 
                             <!-- Edit Department Modal -->
                             @include("admin.department.modals.edit")
+
+                            <!-- Delete Department Modal -->
+                            @include("admin.department.modals.delete")
 
 
                         @empty

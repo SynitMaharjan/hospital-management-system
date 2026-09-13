@@ -7,9 +7,14 @@ use App\Notifications\AppointmentCreatedNotification;
 use App\Notifications\AppointmentStatusUpdatedNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use App\Services\AuditLogService;
 
 class AppointmentService
 {
+    public function __construct(
+        private AuditLogService $auditLogService
+    ) {}
+
     public function create(array $data): Appointment
     {
         return DB::transaction(function () use ($data) {
@@ -30,6 +35,11 @@ class AppointmentService
             $appointment = Appointment::create($data);
 
             $appointment->load('patient.user', 'doctor.user');
+           
+            $this->auditLogService->log(
+                'created',
+                "Created appointment for {$appointment->patient->user->name} with Dr. {$appointment->doctor->user->name}"
+            );
 
             if ($appointment->doctor?->user) {
                 $appointment->doctor->user->notify(
@@ -52,6 +62,12 @@ class AppointmentService
             ]);
 
             $appointment->load('patient.user', 'doctor.user');
+    
+            $this->auditLogService->log(
+                $status,
+                ucfirst($status) .
+                    " appointment for {$appointment->patient->user->name} with Dr. {$appointment->doctor->user->name}"
+            );  
 
             if ($appointment->patient?->user) {
                 $appointment->patient->user->notify(

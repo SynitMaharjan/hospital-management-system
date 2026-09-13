@@ -4,12 +4,22 @@ namespace App\Services;
 
 use App\Models\Department;
 use Illuminate\Support\Facades\Cache;
+use App\Services\AuditLogService;
 
 class DepartmentService
 {
+    public function __construct(
+        private AuditLogService $auditLogService
+    ){}
+
     public function createDepartment(array $data): Department
     {
         $department = Department::create($data);
+      
+        $this->auditLogService->log(
+            'created',
+            "Created department {$department->name}"
+        );  
 
         $this->clearDepartmentCache();
 
@@ -22,6 +32,11 @@ class DepartmentService
     ): Department {
         $department->update($data);
 
+        $this->auditLogService->log(
+            'updated',
+            "Updated department {$department->name}"
+        );
+
         $this->clearDepartmentCache();
 
         return $department;
@@ -31,6 +46,11 @@ class DepartmentService
         Department $department
     ): void {
         $department->delete();
+
+        $this->auditLogService->log(
+            'deleted',
+            "Deleted department {$department->name}"
+        );
 
         $this->clearDepartmentCache();
     }

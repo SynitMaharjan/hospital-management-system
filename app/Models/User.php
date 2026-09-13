@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Enums\Role;
+use App\Models\AuditLog;
 
 class User extends Authenticatable
 {
@@ -50,6 +51,11 @@ class User extends Authenticatable
         'role' => Role::class,
     ];
 
+    public function auditLogs()
+    {
+        return $this->hasMany(AuditLog::class);
+    }
+
     public function doctor()
     {
         return $this->hasOne(Doctor::class);
@@ -59,6 +65,7 @@ class User extends Authenticatable
     {
         return $this->hasOne(Patient::class);
     }
+    
     public function nurse()
     {
         return $this->hasOne(Nurse::class);

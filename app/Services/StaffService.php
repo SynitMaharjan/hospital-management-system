@@ -10,9 +10,13 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Services\AuditLogService;
 
 class StaffService
 {
+    public function __construct(
+        private AuditLogService $audit_log_service
+    ) {}
     public function createStaff(array $data): array
     {
         $temporaryPassword = Str::password(12);
@@ -47,6 +51,11 @@ class StaffService
                     "phone" => $data["phone"],
                 ]);
             }
+
+            $this->audit_log_service->log(
+                'created',
+                "Created {$data['role']} account for {$staff->name}"
+            );
 
             return $staff;
         });
@@ -136,12 +145,43 @@ class StaffService
             }
         });
 
+        $this->audit_log_service->log(
+            'updated',
+            "Updated staff account for {$staff->name}"
+        );
+
         Cache::forget("admin_dashboard_stats");
     }
 
-    public function deleteStaff(User $staff): void
+   public function deleteStaff(User $staff): void
     {
-        $staff->delete();
+        $staffName = $staff->name;
+        $staffRole = $staff->role->value;
+
+        DB::transaction(function () use ($staff, $staffName, $staffRole) {
+
+            if ($staffRole === Role::DOCTOR->value) {
+
+                Doctor::where(
+                    "user_id",
+                    $staff->id
+                )->delete();
+
+            } elseif ($staffRole === Role::NURSE->value) {
+
+                Nurse::where(
+                    "user_id",
+                    $staff->id
+                )->delete();
+            }
+
+            $staff->delete();
+
+            $this->audit_log_service->log(
+                'deleted',
+                "Deleted {$staffRole} account for {$staffName}"
+            );
+        });
 
         Cache::forget("admin_dashboard_stats");
     }

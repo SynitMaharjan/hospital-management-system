@@ -14,6 +14,7 @@ class StaffController extends Controller
     public function __construct(
         private StaffService $staffService,
         private DepartmentService $departmentService
+        
     ) {}
 
     public function index()

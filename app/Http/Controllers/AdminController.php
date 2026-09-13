@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Services\AdminDashboardService;
+use App\Models\AuditLog;
 
 class AdminController extends Controller
 {
@@ -17,6 +18,11 @@ class AdminController extends Controller
 
         $departments = Department::orderBy('name')->get();
 
+        $recentAuditLogs = AuditLog::with('user')
+            ->latest()
+            ->take(3)
+            ->get();
+
         return view('admin.dashboard', [
             'totalStaff' => $stats['totalStaff'],
             'totalDoctors' => $stats['totalDoctors'],
@@ -24,6 +30,7 @@ class AdminController extends Controller
             'totalReceptionists' => $stats['totalReceptionists'],
             'totalPatients' => $stats['totalPatients'],
             'departments' => $departments,
+            'recentAuditLogs' => $recentAuditLogs,
         ]);
     }
 }

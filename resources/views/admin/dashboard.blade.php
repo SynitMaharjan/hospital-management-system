@@ -146,6 +146,85 @@
         </div>
 
     </div>
+    <!-- Recent Activity -->
+
+    <div class="mt-5">
+
+        <div class="mb-3">
+            <h5 class="fw-semibold mb-1">
+                Recent Activity
+            </h5>
+
+            <p class="text-muted mb-0">
+                Recent actions performed in the hospital system.
+            </p>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body p-0">
+           
+            @forelse($recentAuditLogs as $log)
+
+                <div class="d-flex align-items-center justify-content-between
+                            px-4 py-3 border-bottom">
+
+                    <div>
+
+                        <div class="fw-semibold">
+                            {{ ucfirst($log->action) }} staff account
+                        </div>
+
+                        <div class="text-muted small">
+                            {{ $log->description }}
+                        </div>
+
+                        <div class="small mt-1">
+                            By <span class="fw-medium">
+                                {{ $log->user?->name ?? 'System' }}
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="text-end">
+
+                        <span class="badge text-bg-secondary">
+                            {{ ucfirst($log->action) }}
+                        </span>
+
+                        <div class="small text-muted mt-1">
+                            {{ $log->created_at->diffForHumans() }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                @empty
+
+                    <div class="text-center text-muted py-4">
+                        No recent activity.
+                    </div>
+
+            @endforelse
+
+            </div>
+
+        </div>
+       <div class="text-end p-3 border-top">
+            <a href="{{ route("audit-log.index") }}"
+            class="btn btn-sm btn-outline-primary">
+
+                View all activity
+                <i class="fa-solid fa-arrow-right ms-1"></i>
+
+            </a>
+        </div>
+
+    </div>
     @vite("resources/js/staff.js")
 
 @endsection

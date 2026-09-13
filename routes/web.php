@@ -12,6 +12,7 @@ use App\Http\Controllers\ReceptionistAppointmentController;
 use App\Http\Controllers\DoctorAppointmentController;
 use App\Http\Controllers\PatientAppointmentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AuditLogController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,6 +39,8 @@ Route::middleware(['auth', 'admin'])
             ->names('admin.appointment');
         Route::resource('department', DepartmentController::class)
             ->names('admin.department');
+        Route::get('/audit-logs', [AuditLogController::class, 'index'])
+            ->name('audit-log.index');
     });
 
 // For DOCTOR
