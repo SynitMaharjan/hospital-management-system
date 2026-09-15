@@ -53,7 +53,7 @@
 
                             <div class="col-md-8">
                                 <span class="font-monospace">
-                                    {{ $department->id }}
+                                    {{ $department->department_number}}
                                 </span>
                             </div>
 

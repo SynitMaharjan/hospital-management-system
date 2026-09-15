@@ -36,15 +36,7 @@
                         "
                     >
                 </div>
-                    <p>{{ $user->profile_picture_type }}</p>
 
-                    <p>
-                        {{ substr($user->profile_picture, 0, 30) }}
-                    </p>
-
-                    <p>
-                        {{ substr($user->profile_picture_url, 0, 50) }}
-                    </p>
                 {{-- Change Photo --}}
                 <form
                     action="{{ route('profile.picture.update') }}"

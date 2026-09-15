@@ -15,6 +15,7 @@ class Appointment extends Model
         "appointment_time",
         "status",
         "reason",
+        "appointment_number",
     ];
 
     protected $casts = [
@@ -31,6 +32,19 @@ class Appointment extends Model
     public function doctor()
     {
         return $this->belongsTo(Doctor::class);
+    }
+    protected static function booted()
+    {
+        static::created(function ($appointment) {
+            $appointment->update([
+                'appointment_number' => 'APT-' . str_pad(
+                    $appointment->id,
+                    5,
+                    '0',
+                    STR_PAD_LEFT
+                ),
+            ]);
+        });
     }
 
     use HasFactory;

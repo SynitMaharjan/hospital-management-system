@@ -19,19 +19,32 @@ class AppointmentService
     {
         return DB::transaction(function () use ($data) {
 
-            $alreadyBooked = Appointment::where('doctor_id', $data['doctor_id'])
+            $doctorAlreadyBooked = Appointment::where('doctor_id', $data['doctor_id'])
                 ->where('appointment_date', $data['appointment_date'])
                 ->where('appointment_time', $data['appointment_time'])
                 ->whereIn('status', ['pending', 'confirmed'])
                 ->exists();
 
-            if ($alreadyBooked) {
+            if ($doctorAlreadyBooked) {
                 throw ValidationException::withMessages([
                     'appointment_time' =>
                         'The doctor already has an appointment at this date and time.',
                 ]);
             }
 
+            $patientAlreadyBooked = Appointment::where('patient_id', $data['patient_id'])
+                ->where('appointment_date', $data['appointment_date'])
+                ->where('appointment_time', $data['appointment_time'])
+                ->whereIn('status', ['pending', 'confirmed'])
+                ->exists();
+
+            if ($patientAlreadyBooked) {
+                throw ValidationException::withMessages([
+                    'appointment_time' =>
+                        'The patient already has an appointment at this date and time.',
+                ]);
+            }
+            
             $appointment = Appointment::create($data);
 
             $appointment->load('patient.user', 'doctor.user');

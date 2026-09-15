@@ -1,0 +1,30 @@
+=> (lesspipe 2.27) directory: showing the output of ls -lA --color=always .
+total 456
+drwxrwxrwx. 1 synitmhn synitmhn    124 Sep 10 16:00 [0m[34;42mapp[0m
+-rwxrwxrwx. 1 synitmhn synitmhn   1686 Feb 14  2023 [01;32martisan[0m
+-rw-r--r--. 1 synitmhn synitmhn  51816 Sep 15 14:08 as $appointment) {
+-rw-r--r--. 1 synitmhn synitmhn  12829 Sep 15 14:25 as $department) {
+drwxrwxrwx. 1 synitmhn synitmhn     24 Sep  6 01:45 [34;42mbootstrap[0m
+-rw-r--r--. 1 synitmhn synitmhn   1927 Sep 10 11:24 composer.json
+-rw-r--r--. 1 synitmhn synitmhn 307916 Sep 10 11:24 composer.lock
+drwxrwxrwx. 1 synitmhn synitmhn    312 Sep 10 11:24 [34;42mconfig[0m
+-rw-r--r--. 1 synitmhn synitmhn    535 Sep 10 11:24 cookies.txt
+drwxrwxrwx. 1 synitmhn synitmhn     72 Sep  6 01:45 [34;42mdatabase[0m
+-rwxrwxrwx. 1 synitmhn synitmhn    258 Feb 14  2023 [01;32m.editorconfig[0m
+-rwxrwxrwx. 1 synitmhn synitmhn   1180 Sep 11 11:01 [01;32m.env[0m
+-rwxrwxrwx. 1 synitmhn synitmhn   1069 Sep  7 08:16 [01;32m.env.example[0m
+drwxrwxrwx. 1 synitmhn synitmhn    204 Sep 15 13:39 [34;42m.git[0m
+-rwxrwxrwx. 1 synitmhn synitmhn    186 Feb 14  2023 [01;32m.gitattributes[0m
+-rwxrwxrwx. 1 synitmhn synitmhn    221 Feb 14  2023 [01;32m.gitignore[0m
+drwxr-xr-x. 1 synitmhn synitmhn    904 Sep 10 10:33 [01;34mnode_modules[0m
+-rwxrwxrwx. 1 synitmhn synitmhn    226 Feb 14  2023 [01;32mpackage.json[0m
+-rwxrwxrwx. 1 synitmhn synitmhn  36595 Sep 10 10:33 [01;32mpackage-lock.json[0m
+-rwxrwxrwx. 1 synitmhn synitmhn   1146 Feb 14  2023 [01;32mphpunit.xml[0m
+drwxrwxrwx. 1 synitmhn synitmhn    110 Sep 15 10:55 [34;42mpublic[0m
+-rwxrwxrwx. 1 synitmhn synitmhn   1545 Aug 21 15:35 [01;32mREADME.md[0m
+drwxrwxrwx. 1 synitmhn synitmhn     20 Sep  6 01:45 [34;42mresources[0m
+drwxrwxrwx. 1 synitmhn synitmhn     74 Sep 10 11:24 [34;42mroutes[0m
+drwxrwxrwx. 1 synitmhn synitmhn     32 Sep  6 01:45 [34;42mstorage[0m
+drwxrwxrwx. 1 synitmhn synitmhn     90 Sep  6 01:45 [34;42mtests[0m
+drwxrwxrwx. 1 synitmhn synitmhn    562 Sep  6 01:46 [34;42mvendor[0m
+-rwxrwxrwx. 1 synitmhn synitmhn    263 Feb 14  2023 [01;32mvite.config.js[0m

@@ -308,7 +308,7 @@ Appointments
                             <td class="px-4 text-nowrap">
 
                                 <span class="font-monospace">
-                                    {{ $appointment->id }}
+                                    {{ $appointment->appointment_number }}
                                 </span>
 
                             </td>
@@ -320,9 +320,7 @@ Appointments
                                 <div class="d-flex align-items-center">
 
                                     <img
-                                        src="{{ $appointment->patient?->user?->profile_picture
-                                            ? asset("storage/" . $appointment->patient->user->profile_picture)
-                                            : asset("images/default-profile.jpg") }}"
+                                        src="{{ $appointment->patient?->user?->profile_picture_url }}"
                                         alt="{{ $appointment->patient?->user?->name }}"
                                         class="rounded-circle me-2"
                                         style="
@@ -355,9 +353,7 @@ Appointments
                                 <div class="d-flex align-items-center">
 
                                     <img
-                                        src="{{ $appointment->doctor?->user?->profile_picture
-                                            ? asset("storage/" . $appointment->doctor->user->profile_picture)
-                                            : asset("images/default-profile.jpg") }}"
+                                        src="{{ $appointment->doctor?->user?->profile_picture_url }}"
                                         alt="{{ $appointment->doctor?->user?->name }}"
                                         class="rounded-circle me-2"
                                         style="

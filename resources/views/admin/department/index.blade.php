@@ -165,7 +165,7 @@ Departments
                                 <td class="px-4 text-nowrap">
 
                                     <span class="font-monospace">
-                                        {{ $department->id }}
+                                        {{ $department->department_number}}
                                     </span>
 
                                 </td>
