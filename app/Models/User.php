@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Enums\Role;
@@ -28,6 +29,7 @@ class User extends Authenticatable
         'role',
         'must_change_password',
         'profile_picture',
+        'profile_picture_type'
     ];
 
     /**
@@ -70,17 +72,22 @@ class User extends Authenticatable
     {
         return $this->hasOne(Nurse::class);
     }
-    
-    public function getProfilePictureUrlAttribute(): string
+
+   protected function profilePictureUrl(): Attribute
     {
-        if (!$this->profile_picture) {
-            return asset('images/default-profile.jpg');
-        }
+        return Attribute::make(
+            get: function () {
+                if (!$this->profile_picture) {
+                    return asset('images/default-profile.jpg');
+                }
 
-        if (!file_exists(public_path('storage/' . $this->profile_picture))) {
-            return asset('images/default-profile.jpg');
-        }
-
-        return asset('storage/' . $this->profile_picture);
+                return 'data:' . $this->profile_picture_type
+                    . ';base64,'
+                    . $this->profile_picture;
+            },
+        );
     }
+    protected $appends = [
+        'profile_picture_url',
+    ];
 }

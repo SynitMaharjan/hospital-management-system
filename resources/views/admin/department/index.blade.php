@@ -7,6 +7,7 @@ Departments
 @section("dashboard-content")
 
 @include("admin.department.modals.create")
+
 <div class="container-fluid px-0">
 
     <!-- Page Header -->
@@ -57,6 +58,62 @@ Departments
         </div>
 
     @endif
+
+
+    <!-- Search -->
+    <form
+        method="GET"
+        action="{{ route("admin.department.index") }}"
+        class="d-flex flex-wrap align-items-center gap-2 mb-4"
+    >
+
+        <!-- Search Box -->
+        <div
+            class="input-group"
+            style="max-width: 500px;"
+        >
+
+            <span class="input-group-text bg-white border-end-0">
+                <i class="fa-solid fa-magnifying-glass text-muted"></i>
+            </span>
+
+            <input
+                type="text"
+                name="search"
+                class="form-control border-start-0 ps-0"
+                placeholder="Search departments..."
+                value="{{ request("search") }}"
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <!-- Search Button -->
+        <button
+            type="submit"
+            class="btn btn-primary"
+        >
+            <i class="fa-solid fa-magnifying-glass me-1"></i>
+            Search
+        </button>
+
+
+        <!-- Clear Button -->
+        @if(request()->filled("search"))
+
+            <a
+                href="{{ route("admin.department.index") }}"
+                class="btn btn-outline-secondary"
+                title="Clear search"
+            >
+                <i class="fa-solid fa-xmark me-1"></i>
+                Clear
+            </a>
+
+        @endif
+
+    </form>
 
 
     <!-- Department Table Card -->
@@ -169,7 +226,7 @@ Departments
 
                                     <!-- Delete Button -->
                                     <button
-                                        type="submit"
+                                        type="button"
                                         class="btn btn-sm btn-outline-danger"
                                         data-bs-toggle="modal"
                                         data-bs-target="#deleteDepartmentModal{{ $department->id }}"
@@ -188,6 +245,7 @@ Departments
 
                             <!-- Edit Department Modal -->
                             @include("admin.department.modals.edit")
+
 
                             <!-- Delete Department Modal -->
                             @include("admin.department.modals.delete")
@@ -231,6 +289,5 @@ Departments
     </div>
 
 </div>
-
 
 @endsection

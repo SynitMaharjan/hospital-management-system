@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\ReceptionistController;
 use App\Http\Controllers\ReceptionistAppointmentController;
 use App\Http\Controllers\DoctorAppointmentController;
 use App\Http\Controllers\PatientAppointmentController;
@@ -74,9 +75,9 @@ Route::middleware(['auth', 'nurse', 'must.change.password'])->prefix('nurse')->g
 
 //RECEPTIONIST
 Route::middleware(['auth', 'receptionist', 'must.change.password'])->prefix('receptionist')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('receptionist.dashboard');
-    })->name('receptionist.dashboard');
+    Route::get('/dashboard', [ReceptionistController::class, 'dashboard'])
+    ->name('receptionist.dashboard');
+
     Route::resource('appointment', ReceptionistAppointmentController::class)
         ->names('receptionist.appointment');
 });

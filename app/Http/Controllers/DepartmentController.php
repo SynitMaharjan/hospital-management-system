@@ -6,6 +6,7 @@ use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
 use App\Models\Department;
 use App\Services\DepartmentService;
+use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
@@ -16,9 +17,33 @@ class DepartmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+   public function index(Request $request)
     {
-        $departments = Department::latest()->paginate(10);
+        $query = Department::query();
+
+        if ($request->filled("search")) {
+
+            $search = $request->search;
+
+            $query->where(function ($query) use ($search) {
+
+                $query->where(
+                    "name",
+                    "ilike",
+                    "%{$search}%"
+                )->orWhere(
+                    "description",
+                    "ilike",
+                    "%{$search}%"
+                );
+
+            });
+        }
+
+        $departments = $query
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
 
         return view(
             "admin.department.index",
