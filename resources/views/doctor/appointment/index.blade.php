@@ -44,8 +44,8 @@
                             <tr>
                                 <td>{{ $appointment->id }}</td>
                                 <td>
-                                    <div class="fw-medium">{{ $appointment->patient->user->name }}</div>
-                                    <small class="text-muted">{{ $appointment->patient->user->email }}</small>
+                                    <div class="fw-medium">{{ $appointment->patient->full_name }}</div>
+                                    <small class="text-muted">{{ $appointment->patient->email }}</small>
                                 </td>
                                 <td>{{ $appointment->appointment_date->format('M d, Y') }}</td>
                                 <td>{{ $appointment->appointment_time->format('h:i A') }}</td>

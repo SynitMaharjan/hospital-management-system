@@ -167,7 +167,7 @@
                     <div>
 
                         <div class="fw-semibold">
-                            {{ $appointment->patient->user->name }}
+                            {{ $appointment->patient->full_name }}
                         </div>
 
                         <div class="small text-muted mt-1">

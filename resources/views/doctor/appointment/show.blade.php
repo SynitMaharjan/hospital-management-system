@@ -36,11 +36,11 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label class="form-label text-muted fw-bold">Patient</label>
-                <div class="fw-medium">{{ $appointment->patient->user->name }}</div>
+                <div class="fw-medium">{{ $appointment->patient->full_name }}</div>
             </div>
             <div class="col-md-6">
                 <label class="form-label text-muted fw-bold">Patient Email</label>
-                <div>{{ $appointment->patient->user->email }}</div>
+                <div>{{ $appointment->patient->email }}</div>
             </div>
         </div>
 

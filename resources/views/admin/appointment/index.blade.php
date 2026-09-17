@@ -333,7 +333,7 @@ Appointments
                                     <div>
 
                                         <div class="fw-medium">
-                                            {{ $appointment->patient?->user?->name ?? "N/A" }}
+                                            {{ $appointment->patient?->full_name ?? "N/A" }}
                                         </div>
 
                                         <small class="text-muted">
