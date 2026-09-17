@@ -44,14 +44,14 @@ class AppointmentService
                         'The patient already has an appointment at this date and time.',
                 ]);
             }
-            
+
             $appointment = Appointment::create($data);
 
-            $appointment->load('patient.user', 'doctor.user');
-           
+            $appointment->load('patient', 'doctor.user');
+
             $this->auditLogService->log(
                 'created',
-                "Created appointment for {$appointment->patient->user->name} with Dr. {$appointment->doctor->user->name}"
+                "Created appointment for {$appointment->patient->full_name} with Dr. {$appointment->doctor->user->name}"
             );
 
             if ($appointment->doctor?->user) {
@@ -74,13 +74,13 @@ class AppointmentService
                 'status' => $status,
             ]);
 
-            $appointment->load('patient.user', 'doctor.user');
-    
+            $appointment->load('patient', 'doctor.user');
+
             $this->auditLogService->log(
                 $status,
                 ucfirst($status) .
-                    " appointment for {$appointment->patient->user->name} with Dr. {$appointment->doctor->user->name}"
-            );  
+                    " appointment for {$appointment->patient->full_name} with Dr. {$appointment->doctor->user->name}"
+            );
 
             if ($appointment->patient?->user) {
                 $appointment->patient->user->notify(
@@ -89,5 +89,4 @@ class AppointmentService
             }
         });
     }
-    
 }

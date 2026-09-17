@@ -10,6 +10,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ReceptionistController;
 use App\Http\Controllers\ReceptionistAppointmentController;
+use App\Http\Controllers\ReceptionistPatientController;
 use App\Http\Controllers\DoctorAppointmentController;
 use App\Http\Controllers\PatientAppointmentController;
 use App\Http\Controllers\ProfileController;
@@ -35,6 +36,7 @@ Route::middleware(['auth', 'admin'])
         Route::resource('staff', StaffController::class)
             ->names('admin.staff');
         Route::resource('patient', PatientController::class)
+            ->only('index')
             ->names('admin.patient');
         Route::resource('appointment', AppointmentController::class)
             ->names('admin.appointment');
@@ -77,9 +79,14 @@ Route::middleware(['auth', 'nurse', 'must.change.password'])->prefix('nurse')->g
 Route::middleware(['auth', 'receptionist', 'must.change.password'])->prefix('receptionist')->group(function () {
     Route::get('/dashboard', [ReceptionistController::class, 'dashboard'])
     ->name('receptionist.dashboard');
+    Route::resource('patient', ReceptionistPatientController::class)
+    ->only(['index', 'store', 'update', 'destroy'])
+    ->names('receptionist.patient');
+    
 
     Route::resource('appointment', ReceptionistAppointmentController::class)
         ->names('receptionist.appointment');
+
 });
 
 // PASSWORD

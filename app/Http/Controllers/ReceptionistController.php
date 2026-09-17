@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
-use App\Models\Patient;
 
 class ReceptionistController extends Controller
 {
@@ -38,10 +37,7 @@ class ReceptionistController extends Controller
 
         return view(
             'receptionist.dashboard',
-            compact(
-                'todayAppointments',
-                'appointmentStats'
-            )
+            compact('todayAppointments', 'appointmentStats')
         );
     }
 }

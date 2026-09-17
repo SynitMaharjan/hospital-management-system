@@ -3,32 +3,28 @@
 namespace Database\Factories;
 
 use App\Models\Patient;
+use App\Enums\Gender;
+use App\Enums\BloodGroup;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\User;
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Patient>
- */
+
 class PatientFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     protected $model = Patient::class;
+
     public function definition(): array
     {
         return [
-        "user_id" => User::factory()->create([
-                "role" => "patient",
-            ])->id,
+            'user_id' => null,
 
-            "phone" => fake()->phoneNumber(),
-            "date_of_birth" => fake()->date(),
-            "gender" => fake()->randomElement([
-                "Male",
-                "Female",
-            ]),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+
+            'phone' => fake()->phoneNumber(),
+            'email' => fake()->optional()->safeEmail(),
+
+            'date_of_birth' => fake()->date(),
+            'gender' => fake()->randomElement(Gender::cases()),
+            'blood_group' => fake()->randomElement(BloodGroup::cases()),
         ];
     }
 }

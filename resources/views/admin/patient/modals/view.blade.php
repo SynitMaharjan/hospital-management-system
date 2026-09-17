@@ -47,7 +47,7 @@
                     <div class="card-body">
 
                         <h4 class="mb-4">
-                            {{ $patient->user->name }}
+                            {{ $patient->full_name}}
                         </h4>
 
 
@@ -61,7 +61,7 @@
                             <div class="col-md-8">
 
                                 <span class="font-monospace">
-                                    {{ $patient->id }}
+                                    {{ $patient->patient_number }}
                                 </span>
 
                             </div>
@@ -77,7 +77,7 @@
                             </div>
 
                             <div class="col-md-8">
-                                {{ $patient->user->name }}
+                                {{ $patient->full_name }}
                             </div>
 
                         </div>
@@ -91,7 +91,7 @@
                             </div>
 
                             <div class="col-md-8">
-                                {{ $patient->user->email }}
+                                {{ $patient->email ?? 'N/A' }}
                             </div>
 
                         </div>
@@ -126,7 +126,7 @@
 
 
                         <!-- Gender -->
-                        <div class="row">
+                        <div class="row mb-3">
 
                             <div class="col-md-4 fw-semibold text-muted">
                                 Gender
@@ -134,6 +134,19 @@
 
                             <div class="col-md-8">
                                 {{ ucfirst($patient->gender->value) }}
+                            </div>
+
+                        </div>
+
+                        <!-- Blood Group -->
+                        <div class="row">
+
+                            <div class="col-md-4 fw-semibold text-muted">
+                                Blood Group
+                            </div>
+
+                            <div class="col-md-8">
+                                {{ ucfirst($patient->blood_group->value) }}
                             </div>
 
                         </div>

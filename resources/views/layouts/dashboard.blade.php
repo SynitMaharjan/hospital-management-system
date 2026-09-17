@@ -142,7 +142,7 @@
                     @elseif(auth()->user()->role === Role::RECEPTIONIST)
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link text-dark">
+                            <a href="{{ route("receptionist.patient.index") }}" class="nav-link text-dark">
                                 Patients
                             </a>
                         </li>

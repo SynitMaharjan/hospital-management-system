@@ -28,7 +28,7 @@ class AppointmentCreatedNotification extends Notification implements ShouldQueue
             ->subject('New Appointment Assigned')
             ->greeting("Hello Dr. {$notifiable->name},")
             ->line('A new appointment has been assigned to you.')
-            ->line("Patient: {$this->appointment->patient->user->name}")
+            ->line("Patient: {$this->appointment->patient->full_name}")
             ->line("Date: {$this->appointment->appointment_date}")
             ->line("Time: {$this->appointment->appointment_time}")
             ->line("Reason: {$this->appointment->reason}")
@@ -40,7 +40,7 @@ class AppointmentCreatedNotification extends Notification implements ShouldQueue
     {
         return [
             'appointment_id' => $this->appointment->id,
-            'patient_name' => $this->appointment->patient->user->name,
+            'patient_name' => $this->appointment->patient->full_name,
             'appointment_date' => $this->appointment->appointment_date->format('Y-m-d'),
             'appointment_time' => $this->appointment->appointment_time->format('H:i'),
         ];

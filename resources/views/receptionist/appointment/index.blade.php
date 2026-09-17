@@ -84,8 +84,8 @@
                                     value="{{ $patient->id }}"
                                     {{ old('patient_id') == $patient->id ? 'selected' : '' }}
                                 >
-                                    {{ $patient->user->name }}
-                                    ({{ $patient->user->email }})
+                                    {{ $patient->full_name }}
+                                    ({{ $patient->email ?? 'No email provided' }})
                                 </option>
                             @endforeach
                         </select>
@@ -285,11 +285,11 @@
 
                             <td>
                                 <div class="fw-medium">
-                                    {{ $appointment->patient->user->name }}
+                                    {{ $appointment->patient->full_name }} 
                                 </div>
 
                                 <small class="text-muted">
-                                    {{ $appointment->patient->user->email }}
+                                    {{ $appointment->patient->email }}
                                 </small>
                             </td>
 

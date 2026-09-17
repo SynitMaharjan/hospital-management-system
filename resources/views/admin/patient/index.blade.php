@@ -174,6 +174,10 @@
                             </th>
 
                             <th class="py-3 text-nowrap">
+                                Blood Group
+                            </th>
+
+                            <th class="py-3 text-nowrap">
                                 Actions
                             </th>
                         </tr>
@@ -189,7 +193,7 @@
 
                                 <td class="px-4 text-nowrap">
                                     <div class="fw-medium">
-                                        {{ $patient->user->name }}
+                                        {{ $patient->full_name }}
                                     </div>
                                 </td>
 
@@ -203,6 +207,10 @@
 
                                 <td class="text-nowrap">
                                     {{ $patient->gender}}
+                                </td>
+
+                                <td class="text-nowrap">
+                                    {{ $patient->blood_group}}
                                 </td>
 
                                 <td class="text-nowrap">

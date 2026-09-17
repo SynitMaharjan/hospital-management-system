@@ -31,7 +31,7 @@ class Department extends Model
             $department->update([
                 'department_number' => 'DEP-' . str_pad(
                     $department->id,
-                    5,
+                    3,
                     '0',
                     STR_PAD_LEFT
                 ),
