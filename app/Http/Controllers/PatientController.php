@@ -45,6 +45,15 @@ class PatientController extends Controller
             );
         }
 
+        // Blood group filter
+        if (request('blood_group')) {
+
+            $query->where(
+                'blood_group',
+                request('blood_group')
+            );
+        }
+
         $patients = $query
             ->latest()
             ->paginate(10);
@@ -56,5 +65,4 @@ class PatientController extends Controller
             compact('patients')
         );
     }
-
 }

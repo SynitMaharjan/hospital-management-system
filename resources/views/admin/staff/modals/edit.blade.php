@@ -12,7 +12,6 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
 
-            {{-- Header --}}
             <div class="modal-header px-4 py-3">
                 <div>
                     <h5
@@ -35,8 +34,6 @@
                 ></button>
             </div>
 
-
-            {{-- Form --}}
             <form
                 action="{{ route('admin.staff.update', $member) }}"
                 method="POST"
@@ -59,12 +56,12 @@
                             type="text"
                             id="name{{ $member->id }}"
                             name="name"
-                            class="form-control"
+                            class="form-control @error('name') is-invalid @enderror"
                             value="{{ old('name', $member->name) }}"
                         >
 
                         @error('name')
-                            <div class="text-danger small mt-1">
+                            <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
                         @enderror
@@ -83,17 +80,10 @@
                         <input
                             type="text"
                             id="username{{ $member->id }}"
-                            name="username"
                             class="form-control"
-                            value="{{ old('username', $member->username) }}"
+                            value="{{ $member->username }}"
                             readonly
                         >
-
-                        @error('username')
-                            <div class="text-danger small mt-1">
-                                {{ $message }}
-                            </div>
-                        @enderror
                     </div>
 
 
@@ -109,17 +99,10 @@
                         <input
                             type="text"
                             id="employee_id{{ $member->id }}"
-                            name="employee_id"
                             class="form-control"
-                            value="{{ old('employee_id', $member->employee_id) }}"
+                            value="{{ $member->employee_id }}"
                             readonly
                         >
-
-                        @error('employee_id')
-                            <div class="text-danger small mt-1">
-                                {{ $message }}
-                            </div>
-                        @enderror
                     </div>
 
 
@@ -136,12 +119,12 @@
                             type="email"
                             id="email{{ $member->id }}"
                             name="email"
-                            class="form-control"
+                            class="form-control @error('email') is-invalid @enderror"
                             value="{{ old('email', $member->email) }}"
                         >
 
                         @error('email')
-                            <div class="text-danger small mt-1">
+                            <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
                         @enderror
@@ -161,7 +144,7 @@
                             type="text"
                             id="phone{{ $member->id }}"
                             name="phone"
-                            class="form-control"
+                            class="form-control @error('phone') is-invalid @enderror"
                             value="{{ old(
                                 'phone',
                                 $member->doctor?->phone
@@ -170,7 +153,7 @@
                         >
 
                         @error('phone')
-                            <div class="text-danger small mt-1">
+                            <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
                         @enderror
@@ -189,10 +172,9 @@
                         <select
                             id="role{{ $member->id }}"
                             name="role"
-                            class="form-select edit-staff-role @error('role') is-invalid @enderror"
+                            class="form-select @error('role') is-invalid @enderror edit-staff-role"
                             data-staff-id="{{ $member->id }}"
                         >
-
                             <option
                                 value="{{ Role::DOCTOR->value }}"
                                 {{ old(
@@ -228,7 +210,6 @@
                             >
                                 Receptionist
                             </option>
-
                         </select>
 
                         @error('role')
@@ -244,7 +225,6 @@
                         class="mb-4 edit-department-field"
                         id="editDepartmentField{{ $member->id }}"
                     >
-
                         <label
                             for="department_id{{ $member->id }}"
                             class="form-label fw-medium"
@@ -255,15 +235,13 @@
                         <select
                             id="department_id{{ $member->id }}"
                             name="department_id"
-                            class="form-select"
+                            class="form-select @error('department_id') is-invalid @enderror"
                         >
-
                             <option value="">
                                 Select Department
                             </option>
 
                             @foreach($departments as $department)
-
                                 <option
                                     value="{{ $department->id }}"
                                     {{ old(
@@ -276,26 +254,22 @@
                                 >
                                     {{ $department->name }}
                                 </option>
-
                             @endforeach
-
                         </select>
 
                         @error('department_id')
-                            <div class="text-danger small mt-1">
+                            <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
                         @enderror
-
                     </div>
 
 
-                    {{-- Doctor-specific fields --}}
+                    {{-- Doctor Fields --}}
                     <div id="editDoctorFields{{ $member->id }}">
 
                         {{-- Specialization --}}
                         <div class="mb-4">
-
                             <label
                                 for="specialization{{ $member->id }}"
                                 class="form-label fw-medium"
@@ -307,7 +281,7 @@
                                 type="text"
                                 id="specialization{{ $member->id }}"
                                 name="specialization"
-                                class="form-control"
+                                class="form-control @error('specialization') is-invalid @enderror"
                                 value="{{ old(
                                     'specialization',
                                     $member->doctor?->specialization
@@ -315,17 +289,15 @@
                             >
 
                             @error('specialization')
-                                <div class="text-danger small mt-1">
+                                <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
-
                         </div>
 
 
                         {{-- License Number --}}
                         <div class="mb-2">
-
                             <label
                                 for="license_number{{ $member->id }}"
                                 class="form-label fw-medium"
@@ -337,7 +309,7 @@
                                 type="text"
                                 id="license_number{{ $member->id }}"
                                 name="license_number"
-                                class="form-control"
+                                class="form-control @error('license_number') is-invalid @enderror"
                                 value="{{ old(
                                     'license_number',
                                     $member->doctor?->license_number
@@ -345,11 +317,10 @@
                             >
 
                             @error('license_number')
-                                <div class="text-danger small mt-1">
+                                <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
-
                         </div>
 
                     </div>
@@ -383,4 +354,3 @@
         </div>
     </div>
 </div>
-

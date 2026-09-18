@@ -42,7 +42,7 @@
                     <tbody>
                         @foreach($appointments as $appointment)
                             <tr>
-                                <td>{{ $appointment->id }}</td>
+                                <td>{{ $appointment->appointment_number }}</td>
                                 <td>
                                     <div class="fw-medium">{{ $appointment->patient->full_name }}</div>
                                     <small class="text-muted">{{ $appointment->patient->email }}</small>

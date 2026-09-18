@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
-use App\Enums\Role;
 
 class UpdateStaffRequest extends FormRequest
 {
@@ -28,24 +28,6 @@ class UpdateStaffRequest extends FormRequest
                 "required",
                 "string",
                 "max:255",
-            ],
-
-            "username" => [
-                "required",
-                "string",
-                "max:255",
-
-                Rule::unique("users", "username")
-                    ->ignore($this->staff->id),
-            ],
-
-            "employee_id" => [
-                "required",
-                "string",
-                "max:255",
-
-                Rule::unique("users", "employee_id")
-                    ->ignore($this->staff->id),
             ],
 
             "email" => [
@@ -73,7 +55,6 @@ class UpdateStaffRequest extends FormRequest
                 "max:20",
             ],
 
-
             /*
             |--------------------------------------------------------------------------
             | Department
@@ -92,7 +73,6 @@ class UpdateStaffRequest extends FormRequest
                 "nullable",
                 "exists:departments,id",
             ],
-
 
             /*
             |--------------------------------------------------------------------------

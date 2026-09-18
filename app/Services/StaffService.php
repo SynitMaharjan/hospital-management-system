@@ -17,6 +17,7 @@ class StaffService
     public function __construct(
         private AuditLogService $audit_log_service
     ) {}
+
     public function createStaff(array $data): array
     {
         $temporaryPassword = Str::password(12);
@@ -53,7 +54,7 @@ class StaffService
             }
 
             $this->audit_log_service->log(
-                'created',
+                "created",
                 "Created {$data['role']} account for {$staff->name}"
             );
 
@@ -80,8 +81,6 @@ class StaffService
 
             $staff->update([
                 "name" => $data["name"],
-                "username" => $data["username"],
-                "employee_id" => $data["employee_id"],
                 "email" => $data["email"],
                 "role" => $newRole,
             ]);
@@ -146,14 +145,14 @@ class StaffService
         });
 
         $this->audit_log_service->log(
-            'updated',
+            "updated",
             "Updated staff account for {$staff->name}"
         );
 
         Cache::forget("admin_dashboard_stats");
     }
 
-   public function deleteStaff(User $staff): void
+    public function deleteStaff(User $staff): void
     {
         $staffName = $staff->name;
         $staffRole = $staff->role->value;
@@ -178,7 +177,7 @@ class StaffService
             $staff->delete();
 
             $this->audit_log_service->log(
-                'deleted',
+                "deleted",
                 "Deleted {$staffRole} account for {$staffName}"
             );
         });

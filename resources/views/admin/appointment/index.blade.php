@@ -320,8 +320,8 @@ Appointments
                                 <div class="d-flex align-items-center">
 
                                     <img
-                                        src="{{ $appointment->patient?->user?->profile_picture_url }}"
-                                        alt="{{ $appointment->patient?->user?->name }}"
+                                        src="{{ $appointment->patient?->user?->profile_picture_url ?? asset('images/default-profile.jpg') }}"
+                                        alt="{{ $appointment->patient?->full_name ?? 'Patient' }}"
                                         class="rounded-circle me-2"
                                         style="
                                             width: 40px;
