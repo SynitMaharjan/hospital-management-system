@@ -21,7 +21,7 @@ class StorePatientRequest extends FormRequest
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:20'],
-            'email' => ['nullable', 'email', 'max:255'],
+            'email' => ['nullable', 'email', 'max:255', 'unique:patients,email'],
             'date_of_birth' => ['nullable', 'date'],
             'gender' => [
                 'nullable',
