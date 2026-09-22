@@ -56,7 +56,7 @@ class DoctorAppointmentController extends Controller
             ->findOrFail($id);
 
         $validated = $request->validate([
-            "status" => "required|in:confirmed,cancelled",
+            "status" => "required|in:confirmed,cancelled,completed",
         ]);
 
         $this->appointmentService->updateStatus(

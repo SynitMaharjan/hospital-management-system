@@ -12,9 +12,14 @@ use App\Http\Controllers\ReceptionistController;
 use App\Http\Controllers\ReceptionistAppointmentController;
 use App\Http\Controllers\ReceptionistPatientController;
 use App\Http\Controllers\DoctorAppointmentController;
+use App\Http\Controllers\DoctorPatientController;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\MedicalRecordController;
+use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\PatientAppointmentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuditLogController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,13 +53,24 @@ Route::middleware(['auth', 'admin'])
 
 // For DOCTOR
 Route::middleware(['auth', 'doctor', 'must.change.password'])->prefix('doctor')->group(function () {
-   Route::get("/dashboard", function () {
-            return view("doctor.dashboard");
-        })->name("doctor.dashboard");
+   Route::get("/dashboard", [DoctorController::class, 'dashboard'])
+        ->name("doctor.dashboard");
 
         Route::resource("appointment", DoctorAppointmentController::class)
             ->only(["index", "show", "update"])
             ->names("doctor.appointment");
+
+        Route::resource("patient", DoctorPatientController::class)
+            ->only(["index", "show"])
+            ->names("doctor.patient");
+
+        Route::resource("medical-record", MedicalRecordController::class)
+            ->only(["index", "create", "store", "show", "edit", "update"])
+            ->names("doctor.medical-record");
+
+        Route::resource("prescription", PrescriptionController::class)
+            ->only(["index", "create", "store", "show"])
+            ->names("doctor.prescription");
 });
 
 //PATIENT

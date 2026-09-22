@@ -29,9 +29,24 @@ class Patient extends Model
         'blood_group' => BloodGroup::class,
     ];
 
+    public function latestAppointment()
+    {
+        return $this->hasOne(Appointment::class)->latestOfMany();
+    }
+
     public function appointments()
     {
         return $this->hasMany(Appointment::class);
+    }
+
+    public function medicalRecords()
+    {
+        return $this->hasMany(MedicalRecord::class);
+    }
+
+    public function prescriptions()
+    {
+        return $this->hasMany(Prescription::class);
     }
 
     public function user()

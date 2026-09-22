@@ -15,13 +15,25 @@ class MustChangePassword
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (
-            auth()->check() &&
-            auth()->user()->must_change_password &&
-            !$request->routeIs("password.change", "password.update", "logout")
-        ) {
-            return redirect()->route("password.change");
+        // Skip if not authenticated
+        if (!auth()->check()) {
+            return $next($request);
         }
-        return $next($request);
+
+        // Skip if user doesn't need to change password
+        if (!auth()->user()->must_change_password) {
+            return $next($request);
+        }
+
+        // Allow access to password change, update, and logout routes
+        $currentRoute = $request->route()?->getName();
+        $allowedRoutes = ['password.change', 'password.update', 'logout'];
+        
+        if ($currentRoute && in_array($currentRoute, $allowedRoutes, true)) {
+            return $next($request);
+        }
+
+        // Redirect to password change page
+        return redirect()->route('password.change');
     }
 }

@@ -1,0 +1,82 @@
+.stat-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08) !important;
+}
+
+.stat-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.schedule-item {
+    transition: background-color 0.15s ease;
+}
+
+.schedule-item:hover {
+    background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+.time-column {
+    min-width: 80px;
+}
+
+.min-w-50px {
+    min-width: 50px;
+}
+
+.min-w-80px {
+    min-width: 80px;
+}
+
+.hover-shadow:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.transition-all {
+    transition: all 0.2s ease;
+}
+
+.empty-state {
+    width: 80px;
+    height: 80px;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upcoming-list > div:last-child,
+.schedule-list > div:last-child {
+    border-bottom: none;
+}
+
+.card-header {
+    background-color: #fff;
+}
+
+.badge {
+    font-weight: 500;
+}
+
+.btn-group-sm .btn {
+    padding: 0.25rem 0.5rem;
+}
+
+@media (max-width: 767.98px) {
+    .time-column {
+        min-width: 60px;
+    }
+
+    .patient-info h6 {
+        font-size: 0.875rem;
+    }
+}

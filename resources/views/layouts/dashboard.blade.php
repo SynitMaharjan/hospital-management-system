@@ -92,26 +92,26 @@
                     @elseif(auth()->user()->role === Role::DOCTOR)
 
                         <li class="nav-item">
-                            <a href="{{ route("doctor.appointment.index") }}" class="nav-link text-dark">
-                                Appointments
+                            <a href="{{ route("doctor.appointment.index") }}" class="nav-link {{ request()->routeIs('doctor.appointment.*') ? 'active' : 'text-dark' }}">
+                                <i class="bi bi-calendar-check me-2"></i> Appointments
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link text-dark">
-                                My Patients
+                            <a href="{{ route("doctor.patient.index") }}" class="nav-link {{ request()->routeIs('doctor.patient.*') ? 'active' : 'text-dark' }}">
+                                <i class="bi bi-people-fill me-2"></i> My Patients
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link text-dark">
-                                Medical Records
+                            <a href="{{ route('doctor.medical-record.index') }}" class="nav-link {{ request()->routeIs('doctor.medical-record.*') ? 'active' : 'text-dark' }}">
+                                <i class="bi bi-file-medical me-2"></i> Medical Records
                             </a>
-                        </li>
+</li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link text-dark">
-                                Prescriptions
+                            <a href="{{ route('doctor.prescription.index') }}" class="nav-link {{ request()->routeIs('doctor.prescription.*') ? 'active' : 'text-dark' }}">
+                                <i class="bi bi-prescription me-2"></i> Prescriptions
                             </a>
                         </li>
 
