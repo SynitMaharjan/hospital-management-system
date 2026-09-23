@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Notifications\Notifiable;
 use App\Enums\Gender;
 use App\Enums\BloodGroup;
 
 class Patient extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
     protected $fillable = [
             'user_id',
             'patient_number',
@@ -52,6 +53,11 @@ class Patient extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function verifications()
+    {
+    return $this->hasMany(PatientVerification::class);
     }
 
     protected function fullName(): Attribute

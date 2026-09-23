@@ -1,24 +1,18 @@
-@extends("layouts.dashboard")
+@extends('layouts.dashboard')
 
-@section("page-title")
-
-
+@section('page-title')
 Patients
-
-
 @endsection
 
 @php
 use App\Enums\Gender;
 @endphp
 
-@section("dashboard-content")
+@section('dashboard-content')
 
 <div class="container-fluid px-0">
 
-
 {{-- Page Header --}}
-
 <div class="d-flex justify-content-between align-items-center mb-4">
 
     <div>
@@ -44,7 +38,6 @@ use App\Enums\Gender;
 </div>
 
 {{-- Search & Filters --}}
-
 <form
     method="GET"
     action="{{ route('receptionist.patient.index') }}"
@@ -52,7 +45,6 @@ use App\Enums\Gender;
 >
 
     {{-- Search --}}
-
     <div
         class="input-group"
         style="max-width: 500px;"
@@ -74,7 +66,6 @@ use App\Enums\Gender;
     </div>
 
     {{-- Filter Dropdown --}}
-
     <div class="dropdown">
 
         <button
@@ -84,10 +75,8 @@ use App\Enums\Gender;
             aria-expanded="false"
             title="Filter"
         >
-
             <i class="fa-solid fa-filter me-1"></i>
             Filter
-
         </button>
 
         <div
@@ -134,19 +123,15 @@ use App\Enums\Gender;
     </div>
 
     {{-- Search Button --}}
-
     <button
         type="submit"
         class="btn btn-primary"
     >
-
         <i class="fa-solid fa-magnifying-glass me-1"></i>
         Search
-
     </button>
 
     {{-- Clear --}}
-
     @if(request()->hasAny(['search', 'gender']))
 
         <a
@@ -154,10 +139,8 @@ use App\Enums\Gender;
             class="btn btn-outline-secondary"
             title="Clear search and filters"
         >
-
             <i class="fa-solid fa-xmark me-1"></i>
             Clear
-
         </a>
 
     @endif
@@ -165,7 +148,6 @@ use App\Enums\Gender;
 </form>
 
 {{-- Patient Table Card --}}
-
 <div class="card border-0 shadow-sm">
 
     <div class="card-body p-0">
@@ -179,6 +161,10 @@ use App\Enums\Gender;
                     <tr>
 
                         <th class="px-4 py-3 text-nowrap">
+                            Patient No.
+                        </th>
+
+                        <th class="py-3 text-nowrap">
                             Name
                         </th>
 
@@ -212,7 +198,17 @@ use App\Enums\Gender;
 
                         <tr>
 
+                            {{-- Patient Number --}}
                             <td class="px-4 text-nowrap">
+
+                                <span class="fw-medium">
+                                    {{ $patient->patient_number }}
+                                </span>
+
+                            </td>
+
+                            {{-- Name --}}
+                            <td class="text-nowrap">
 
                                 <div class="fw-medium">
                                     {{ $patient->full_name }}
@@ -220,34 +216,41 @@ use App\Enums\Gender;
 
                             </td>
 
+                            {{-- Phone --}}
                             <td class="text-nowrap">
                                 {{ $patient->phone ?? 'N/A' }}
                             </td>
 
+                            {{-- Date of Birth --}}
                             <td class="text-nowrap">
                                 {{ $patient->date_of_birth?->format('Y-m-d') ?? 'N/A' }}
                             </td>
 
+                            {{-- Gender --}}
                             <td class="text-nowrap">
                                 {{ $patient->gender?->value ?? 'N/A' }}
                             </td>
 
+                            {{-- Blood Group --}}
                             <td class="text-nowrap">
-                                {{ $patient->blood_group ?? 'N/A' }}
+                                {{ $patient->blood_group?->value ?? 'N/A' }}
                             </td>
 
+                            {{-- Actions --}}
                             <td class="text-nowrap">
 
+                                {{-- View --}}
                                 <button
                                     type="button"
                                     class="btn btn-sm btn-outline-primary"
                                     data-bs-toggle="modal"
                                     data-bs-target="#viewPatientModal-{{ $patient->id }}"
+                                    title="View Patient"
                                 >
-
                                     <i class="fa-solid fa-eye"></i>
-
                                 </button>
+
+                                {{-- Edit --}}
                                 <button
                                     type="button"
                                     class="btn btn-sm btn-outline-warning"
@@ -257,6 +260,8 @@ use App\Enums\Gender;
                                 >
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
+
+                                {{-- Delete --}}
                                 <button
                                     type="button"
                                     class="btn btn-sm btn-outline-danger"
@@ -271,17 +276,20 @@ use App\Enums\Gender;
 
                         </tr>
 
+                        {{-- Patient Modals --}}
                         @include(
-                            "receptionist.patient.modals.view",
-                            ["patient" => $patient]
+                            'receptionist.patient.modals.view',
+                            ['patient' => $patient]
                         )
+
                         @include(
-                            "receptionist.patient.modals.edit",
-                            ["patient" => $patient]
+                            'receptionist.patient.modals.edit',
+                            ['patient' => $patient]
                         )
+
                         @include(
-                            "receptionist.patient.modals.delete",
-                            ["patient" => $patient]
+                            'receptionist.patient.modals.delete',
+                            ['patient' => $patient]
                         )
 
                     @empty
@@ -289,12 +297,10 @@ use App\Enums\Gender;
                         <tr>
 
                             <td
-                                colspan="5"
+                                colspan="7"
                                 class="text-center py-5 text-muted"
                             >
-
                                 No patients found.
-
                             </td>
 
                         </tr>
@@ -309,20 +315,46 @@ use App\Enums\Gender;
 
     </div>
 
+    {{-- Pagination --}}
     @if($patients->hasPages())
 
         <div class="p-3 border-top">
-
             {{ $patients->links() }}
-
         </div>
 
     @endif
 
 </div>
 
-@include("receptionist.patient.modals.create")
+{{-- Create Patient Modal --}}
+@include('receptionist.patient.modals.create')
 
 </div>
+
+{{-- Reopen Edit Modal After Validation Error --}}
+@if(session('edit_patient_id'))
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const patientId = "{{ session('edit_patient_id') }}";
+
+            const modalElement = document.getElementById(
+                'editPatientModal-' + patientId
+            );
+
+            if (modalElement) {
+
+                const modal = new bootstrap.Modal(modalElement);
+
+                modal.show();
+
+            }
+
+        });
+    </script>
+
+
+@endif
 
 @endsection

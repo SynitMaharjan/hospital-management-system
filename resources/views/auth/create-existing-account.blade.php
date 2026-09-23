@@ -10,20 +10,19 @@
 
             <div class="card-body p-5">
 
-                {{-- Header --}}
                 <div class="text-center mb-4">
 
                     <div class="mb-3">
-                        <i class="fa-solid fa-lock fa-3x text-primary"></i>
+                        <i class="fa-solid fa-user-lock fa-3x text-primary"></i>
                     </div>
 
                     <h2 class="fw-bold mb-2">
-                        Change Your Password
+                        Create Your Account
                     </h2>
 
                     <p class="text-muted mb-0">
-                        You're using a temporary password.
-                        Please create a new password to continue.
+                        Your patient record has been verified.
+                        Create your login credentials to continue.
                     </p>
 
                 </div>
@@ -47,22 +46,50 @@
 
                 @endif
 
-                {{-- Password Form --}}
                 <form
-                    action="{{ route('password.update') }}"
+                    action="{{ route('register.existing.account') }}"
                     method="POST"
                 >
 
                     @csrf
 
-                    {{-- New Password --}}
+                    {{-- Username --}}
+                    <div class="mb-3">
+
+                        <label
+                            for="username"
+                            class="form-label"
+                        >
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            class="form-control @error('username') is-invalid @enderror"
+                            value="{{ old('username') }}"
+                            placeholder="Choose a username"
+                            autocomplete="username"
+                            required
+                        >
+
+                        @error('username')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+
+                    </div>
+
+                    {{-- Password --}}
                     <div class="mb-3">
 
                         <label
                             for="password"
                             class="form-label"
                         >
-                            New Password
+                            Password
                         </label>
 
                         <input
@@ -70,7 +97,7 @@
                             id="password"
                             name="password"
                             class="form-control @error('password') is-invalid @enderror"
-                            placeholder="Enter your new password"
+                            placeholder="Create a password"
                             autocomplete="new-password"
                             required
                         >
@@ -90,7 +117,7 @@
                             for="password_confirmation"
                             class="form-label"
                         >
-                            Confirm New Password
+                            Confirm Password
                         </label>
 
                         <input
@@ -98,32 +125,22 @@
                             id="password_confirmation"
                             name="password_confirmation"
                             class="form-control"
-                            placeholder="Confirm your new password"
+                            placeholder="Confirm your password"
                             autocomplete="new-password"
                             required
                         >
 
                     </div>
 
-                    {{-- Submit --}}
                     <button
                         type="submit"
                         class="btn btn-primary w-100 py-2"
                     >
-                        <i class="fa-solid fa-key me-2"></i>
-                        Change Password
+                        <i class="fa-solid fa-user-check me-2"></i>
+                        Create Account
                     </button>
 
                 </form>
-
-                {{-- Password Requirement --}}
-                <div class="text-center mt-4">
-
-                    <small class="text-muted">
-                        Choose a strong password that you don't use elsewhere.
-                    </small>
-
-                </div>
 
             </div>
 
@@ -134,3 +151,4 @@
 </div>
 
 @endsection
+

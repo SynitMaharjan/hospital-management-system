@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
-use Illuminate\Validation\Rules\Enum;
 use App\Enums\Gender;
+use App\Enums\BloodGroup;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rules\Password;
 
 class RegisterRequest extends FormRequest
 {
@@ -30,10 +31,25 @@ class RegisterRequest extends FormRequest
             |--------------------------------------------------------------------------
             */
 
-            'name' => [
+            'first_name' => [
                 'required',
                 'string',
                 'max:255',
+                'regex:/^[\pL\s.\'-]+$/u',
+            ],
+
+            'middle_name' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[\pL\s.\'-]+$/u',
+            ],
+
+            'last_name' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[\pL\s.\'-]+$/u',
             ],
 
             'username' => [
@@ -41,6 +57,7 @@ class RegisterRequest extends FormRequest
                 'string',
                 'max:255',
                 'unique:users,username',
+                'regex:/^[A-Za-z0-9._-]+$/',
             ],
 
             'email' => [
@@ -49,9 +66,9 @@ class RegisterRequest extends FormRequest
                 'email',
                 'max:255',
                 'unique:users,email',
+                'unique:patients,email',
             ],
-
-
+            
             /*
             |--------------------------------------------------------------------------
             | Patient Information
@@ -75,6 +92,10 @@ class RegisterRequest extends FormRequest
                 new Enum(Gender::class),
             ],
 
+            'blood_group' => [
+                'nullable',
+                new Enum(BloodGroup::class),
+            ],
 
             /*
             |--------------------------------------------------------------------------
@@ -93,4 +114,3 @@ class RegisterRequest extends FormRequest
         ];
     }
 }
-

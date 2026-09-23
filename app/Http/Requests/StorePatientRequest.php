@@ -18,8 +18,27 @@ class StorePatientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
+            'first_name' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[\pL\s.\'-]+$/u',
+            ],
+
+            'middle_name' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[\pL\s.\'-]+$/u',
+            ],
+
+            'last_name' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[\pL\s.\'-]+$/u',
+            ],
+            
             'phone' => ['required', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:255', 'unique:patients,email'],
             'date_of_birth' => ['nullable', 'date'],

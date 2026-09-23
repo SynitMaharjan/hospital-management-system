@@ -485,7 +485,7 @@
                                 class="bg-warning-subtle text-warning rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
                                 style="width: 52px; height: 52px;"
                             >
-                                <i class="fa-solid fa-clipboard-pulse fs-4"></i>
+                                <i class="fa-solid fa-flask fs-4"></i>
                             </div>
 
                             <div>
@@ -518,7 +518,7 @@
                             class="bg-warning-subtle text-warning rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
                             style="width: 40px; height: 40px;"
                         >
-                            <i class="fa-solid fa-calendar-days"></i>
+                            <i class="fa-solid fa-calendar-days fs-4"></i>
                         </div>
 
                         <div>

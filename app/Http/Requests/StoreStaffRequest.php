@@ -31,12 +31,14 @@ class StoreStaffRequest extends FormRequest
                 "required",
                 "string",
                 "max:255",
+                'regex:/^[\pL\s.\'-]+$/u',
             ],
 
             "username" => [
                 "required",
                 "string",
                 "max:255",
+                'regex:/^[A-Za-z0-9._-]+$/',
                 "unique:users,username",
             ],
 

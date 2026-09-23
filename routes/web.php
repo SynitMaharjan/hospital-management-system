@@ -126,6 +126,12 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/logout', 'logout')->middleware('auth')->name('logout');
     Route::get('/register', 'showRegister')->middleware('guest')->name('register');
     Route::post('/register', 'register')->middleware('guest');
+    Route::post('/register/existing', 'existingPatient')->middleware('guest')->name('register.existing');
+    Route::get('/register/existing/verify', 'showExistingPatientVerify')->middleware('guest')->name('register.existing.verify');
+    Route::post('/register/existing/verify', 'verifyExistingPatient')->middleware('guest')->name('register.existing.verify.submit');
+    Route::get('/register/existing/restart', 'restartExistingPatientRegistration')->name('register.existing.restart');
+    Route::get('/register/existing/account', 'showExistingPatientAccount')->middleware('guest')->name('register.existing.account');
+    Route::post('/register/existing/account', 'createExistingPatientAccount')->middleware('guest')->name('register.existing.account.store');    
 });
 
 Route::get('/', function () {

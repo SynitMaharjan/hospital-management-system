@@ -26,7 +26,6 @@ class UpdateMedicalRecordRequest extends FormRequest
     {
         return [
             'record_date' => 'sometimes|required|date',
-
             'chief_complaint' => 'nullable|string|max:1000',
             'symptoms' => 'nullable|string|max:2000',
             'diagnosis' => 'nullable|string|max:2000',

@@ -6,6 +6,8 @@ use App\Enums\Role;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateStaffRequest extends FormRequest
 {
@@ -28,6 +30,7 @@ class UpdateStaffRequest extends FormRequest
                 "required",
                 "string",
                 "max:255",
+                'regex:/^[\pL\s.\'-]+$/u',
             ],
 
             "email" => [
