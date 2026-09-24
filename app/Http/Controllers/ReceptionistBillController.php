@@ -70,7 +70,8 @@ class ReceptionistBillController extends Controller
                                 'email',
                                 'ilike',
                                 "%{$search}%"
-                            );
+                            )
+                            ->orWhereRaw( "CONCAT_WS(' ', first_name, middle_name, last_name) ILIKE ?", ["%{$search}%"] );
                     });
             });
         }

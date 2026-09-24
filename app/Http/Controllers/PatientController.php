@@ -27,11 +27,10 @@ class PatientController extends Controller
                     ->orWhere('phone', 'ilike', "%{$search}%")
                     ->orWhere('email', 'ilike', "%{$search}%")
                     ->orWhereHas('user', function ($q) use ($search) {
-
                         $q->where('username', 'ilike', "%{$search}%")
                             ->orWhere('email', 'ilike', "%{$search}%");
-
-                    });
+                    })
+                    ->orWhereRaw( "CONCAT_WS(' ', first_name, middle_name, last_name) ILIKE ?", ["%{$search}%"] );
 
             });
         }
