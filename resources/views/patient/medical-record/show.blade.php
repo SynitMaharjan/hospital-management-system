@@ -497,8 +497,6 @@ Medical Record
 
                 </div>
 
-                @/* Remove Add Prescription button for patients */ @*
-
             </div>
 
 

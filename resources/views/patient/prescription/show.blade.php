@@ -312,7 +312,7 @@ Prescription
                             @foreach($prescription->items as $item)
 
                                 <div class="list-group-item">
-                                    <strong>{{ $item->name }}</strong>
+                                    <strong>{{ $item->medicine_name}}</strong>
                                     @if($item->dosage)
                                         <br>
                                         <small class="text-muted">Dosage: {{ $item->dosage }}</small>

@@ -36,7 +36,7 @@
                     <tbody>
                         @foreach($appointments as $appointment)
                             <tr>
-                                <td>{{ $appointment->id }}</td>
+                                <td>{{ $appointment->appointment_number }}</td>
                                 <td>
                                     <div class="fw-medium">Dr. {{ $appointment->doctor->user->name }}</div>
                                     <small class="text-muted">{{ $appointment->doctor->specialization }}</small>

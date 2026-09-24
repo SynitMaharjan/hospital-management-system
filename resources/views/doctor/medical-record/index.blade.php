@@ -6,12 +6,13 @@
 
 @section('dashboard-content')
 
-<div class="container-fluid px-4">
+<div class="container-fluid px-0">
 
     <!-- Page Header -->
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
         <div>
+
             <div class="d-flex align-items-center gap-2 mb-1">
 
                 <div class="text-primary fs-4">
@@ -27,6 +28,7 @@
             <p class="text-muted mb-0">
                 Clinical records for your patients
             </p>
+
         </div>
 
 
@@ -41,124 +43,139 @@
     </div>
 
 
-    <!-- Search and Filters -->
-    <div class="card border-0 shadow-sm mb-4">
+    {{-- Search & Filters --}}
+    <form
+        method="GET"
+        action="{{ route('doctor.medical-record.index') }}"
+        class="d-flex flex-wrap align-items-center gap-2 mb-4"
+    >
 
-        <div class="card-body p-4">
+        {{-- Search --}}
+        <div
+            class="input-group"
+            style="max-width: 500px;"
+        >
 
-            <form
-                method="GET"
-                action="{{ route('doctor.medical-record.index') }}"
+            <span class="input-group-text bg-white border-end-0">
+
+                <i class="fa-solid fa-magnifying-glass text-muted"></i>
+
+            </span>
+
+            <input
+                type="text"
+                name="search"
+                class="form-control border-start-0 ps-0"
+                placeholder="Search medical records..."
+                value="{{ request('search') }}"
+                autocomplete="off"
             >
-
-                <div class="row g-3 align-items-end">
-
-                    <!-- Search -->
-                    <div class="col-lg-5 col-md-6">
-
-                        <label
-                            for="search"
-                            class="form-label fw-medium"
-                        >
-                            Search Records
-                        </label>
-
-                        <div class="input-group">
-
-                            <span class="input-group-text bg-white">
-                                <i class="fa-solid fa-magnifying-glass text-muted"></i>
-                            </span>
-
-                            <input
-                                type="text"
-                                name="search"
-                                id="search"
-                                class="form-control"
-                                placeholder="Patient name, number, phone, diagnosis..."
-                                value="{{ request('search') }}"
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- Date From -->
-                    <div class="col-lg-2 col-md-3">
-
-                        <label
-                            for="date_from"
-                            class="form-label fw-medium"
-                        >
-                            From
-                        </label>
-
-                        <input
-                            type="date"
-                            name="date_from"
-                            id="date_from"
-                            class="form-control"
-                            value="{{ request('date_from') }}"
-                        >
-
-                    </div>
-
-
-                    <!-- Date To -->
-                    <div class="col-lg-2 col-md-3">
-
-                        <label
-                            for="date_to"
-                            class="form-label fw-medium"
-                        >
-                            To
-                        </label>
-
-                        <input
-                            type="date"
-                            name="date_to"
-                            id="date_to"
-                            class="form-control"
-                            value="{{ request('date_to') }}"
-                        >
-
-                    </div>
-
-
-                    <!-- Apply -->
-                    <div class="col-lg-1 col-md-6 d-grid">
-
-                        <button
-                            type="submit"
-                            class="btn btn-primary"
-                        >
-                            <i class="fa-solid fa-filter me-1"></i>
-                            Apply
-                        </button>
-
-                    </div>
-
-
-                    <!-- Reset -->
-                    <div class="col-lg-2 col-md-6 d-grid">
-
-                        <a
-                            href="{{ route('doctor.medical-record.index') }}"
-                            class="btn btn-light border"
-                        >
-                            <i class="fa-solid fa-xmark me-1"></i>
-                            Reset
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </form>
 
         </div>
 
-    </div>
+
+        {{-- Filter Dropdown --}}
+        <div class="dropdown">
+
+            <button
+                type="button"
+                class="btn btn-outline-secondary"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                title="Filter"
+            >
+
+                <i class="fa-solid fa-filter me-1"></i>
+                Filter
+
+            </button>
+
+
+            <div
+                class="dropdown-menu p-3 shadow-sm border-0"
+                style="min-width: 280px;"
+            >
+
+                <div class="fw-semibold mb-3">
+                    Filter Medical Records
+                </div>
+
+
+                {{-- Date From --}}
+                <div class="mb-3">
+
+                    <label
+                        for="date_from"
+                        class="form-label small text-muted mb-1"
+                    >
+                        From
+                    </label>
+
+                    <input
+                        type="date"
+                        name="date_from"
+                        id="date_from"
+                        class="form-control form-control-sm"
+                        value="{{ request('date_from') }}"
+                    >
+
+                </div>
+
+
+                {{-- Date To --}}
+                <div>
+
+                    <label
+                        for="date_to"
+                        class="form-label small text-muted mb-1"
+                    >
+                        To
+                    </label>
+
+                    <input
+                        type="date"
+                        name="date_to"
+                        id="date_to"
+                        class="form-control form-control-sm"
+                        value="{{ request('date_to') }}"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- Search Button --}}
+        <button
+            type="submit"
+            class="btn btn-primary"
+        >
+
+            <i class="fa-solid fa-magnifying-glass me-1"></i>
+            Search
+
+        </button>
+
+
+        {{-- Clear --}}
+        @if(request()->hasAny(['search', 'date_from', 'date_to']))
+
+            <a
+                href="{{ route('doctor.medical-record.index') }}"
+                class="btn btn-outline-secondary"
+                title="Clear search and filters"
+            >
+
+                <i class="fa-solid fa-xmark me-1"></i>
+                Clear
+
+            </a>
+
+        @endif
+
+    </form>
 
 
     <!-- Medical Records Card -->
@@ -278,8 +295,11 @@
                                         </div>
 
                                         <small class="text-muted">
+
                                             <i class="fa-solid fa-phone fa-xs me-1"></i>
+
                                             {{ $record->patient->phone ?? 'No phone' }}
+
                                         </small>
 
                                     </div>
@@ -368,13 +388,16 @@
                                     href="{{ route('doctor.medical-record.show', $record) }}"
                                     class="btn btn-sm btn-outline-primary"
                                 >
+
                                     <i class="fa-solid fa-eye me-1"></i>
                                     View
+
                                 </a>
 
                             </td>
 
                         </tr>
+
 
                     @empty
 
@@ -394,13 +417,16 @@
                                         <i class="fa-solid fa-file-medical fs-4"></i>
                                     </div>
 
+
                                     <h6 class="fw-semibold mb-1">
                                         No medical records found
                                     </h6>
 
+
                                     <p class="text-muted small mb-3">
                                         No records match your current search or filters.
                                     </p>
+
 
                                     @if(request()->hasAny(['search', 'date_from', 'date_to']))
 
@@ -408,8 +434,10 @@
                                             href="{{ route('doctor.medical-record.index') }}"
                                             class="btn btn-sm btn-outline-primary"
                                         >
+
                                             <i class="fa-solid fa-rotate-left me-1"></i>
                                             Clear Filters
+
                                         </a>
 
                                     @else
@@ -418,8 +446,10 @@
                                             href="{{ route('doctor.medical-record.create') }}"
                                             class="btn btn-sm btn-primary"
                                         >
+
                                             <i class="fa-solid fa-plus me-1"></i>
                                             Create Medical Record
+
                                         </a>
 
                                     @endif
@@ -442,7 +472,7 @@
         <!-- Pagination -->
         @if($medicalRecords->hasPages())
 
-            <div class="card-footer bg-white border-0 px-4 py-3">
+            <div class="p-3 border-top">
 
                 {{ $medicalRecords->links() }}
 

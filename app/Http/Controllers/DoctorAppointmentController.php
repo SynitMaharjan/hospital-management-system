@@ -64,8 +64,9 @@ class DoctorAppointmentController extends Controller
             $validated["status"]
         );
 
-        return redirect()
-            ->route("doctor.appointment.show", $appointment->id)
-            ->with("success", "Appointment status updated successfully.");
-    }
+        return response()->json([
+            'message' => 'Appointment marked as completed successfully.',
+            'status' => 'success',
+        ]);
+    }   
 }
