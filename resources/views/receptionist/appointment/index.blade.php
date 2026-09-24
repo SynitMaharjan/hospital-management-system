@@ -4,24 +4,64 @@
 
 @section('dashboard-content')
 
-@if (session('success')) <div class="alert alert-success alert-dismissible fade show" role="alert">
-{{ session('success') }} <button type="button" class="btn-close" data-bs-dismiss="alert"></button> </div>
+@if (session('success'))
+
+
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+
+    {{ session('success') }}
+
+    <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+    ></button>
+
+</div>
+
+
 @endif
 
-@if ($errors->any()) <div class="alert alert-danger alert-dismissible fade show" role="alert"> <ul class="mb-0">
-@foreach ($errors->all() as $error) <li>{{ $error }}</li>
-@endforeach </ul> <button type="button" class="btn-close" data-bs-dismiss="alert"></button> </div>
+@if ($errors->any())
+
+
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+
+    <ul class="mb-0">
+
+        @foreach ($errors->all() as $error)
+
+            <li>{{ $error }}</li>
+
+        @endforeach
+
+    </ul>
+
+    <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+    ></button>
+
+</div>
+
+
 @endif
 
 <!-- Page Header -->
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h4 class="mb-1">Appointments</h4>
-        <p class="text-muted mb-0">
-            Manage and schedule patient appointments.
-        </p>
-    </div>
+
+
+<div>
+
+    <h4 class="mb-1">Appointments</h4>
+
+    <p class="text-muted mb-0">
+        Manage and schedule patient appointments.
+    </p>
+
+</div>
 
 <button
     type="button"
@@ -29,9 +69,13 @@
     data-bs-toggle="modal"
     data-bs-target="#createAppointmentModal"
 >
+
     <i class="fas fa-plus me-1"></i>
+
     New Appointment
+
 </button>
+
 
 </div>
 
@@ -44,13 +88,23 @@
     aria-labelledby="createAppointmentModalLabel"
     aria-hidden="true"
 >
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
+
+
+<div class="modal-dialog modal-lg modal-dialog-centered">
+
+    <div class="modal-content">
 
         <div class="modal-header">
-            <h5 class="modal-title" id="createAppointmentModalLabel">
+
+            <h5
+                class="modal-title"
+                id="createAppointmentModalLabel"
+            >
+
                 <i class="fas fa-calendar-plus me-2"></i>
+
                 Create New Appointment
+
             </h5>
 
             <button
@@ -59,75 +113,129 @@
                 data-bs-dismiss="modal"
                 aria-label="Close"
             ></button>
+
         </div>
+
 
         <form
             method="POST"
             action="{{ route('receptionist.appointment.store') }}"
         >
+
             @csrf
 
             <div class="modal-body">
+
                 <div class="row g-3">
 
+
                     <!-- Patient -->
+
                     <div class="col-md-6">
+
                         <label class="form-label fw-bold">
-                            Patient <span class="text-danger">*</span>
+
+                            Patient
+                            <span class="text-danger">*</span>
+
                         </label>
 
-                        <select name="patient_id" class="form-select" required>
-                            <option value="">Select Patient</option>
+                        <select
+                            name="patient_id"
+                            class="form-select"
+                            required
+                        >
+
+                            <option value="">
+                                Select Patient
+                            </option>
 
                             @foreach ($patients as $patient)
+
                                 <option
                                     value="{{ $patient->id }}"
                                     {{ old('patient_id') == $patient->id ? 'selected' : '' }}
                                 >
+
                                     {{ $patient->full_name }}
+
                                     ({{ $patient->email ?? 'No email provided' }})
+
                                 </option>
+
                             @endforeach
+
                         </select>
 
                         @error('patient_id')
+
                             <div class="text-danger small mt-1">
                                 {{ $message }}
                             </div>
+
                         @enderror
+
                     </div>
 
+
                     <!-- Doctor -->
+
                     <div class="col-md-6">
+
                         <label class="form-label fw-bold">
-                            Doctor <span class="text-danger">*</span>
+
+                            Doctor
+                            <span class="text-danger">*</span>
+
                         </label>
 
-                        <select name="doctor_id" class="form-select" required>
-                            <option value="">Select Doctor</option>
+                        <select
+                            name="doctor_id"
+                            class="form-select"
+                            required
+                        >
+
+                            <option value="">
+                                Select Doctor
+                            </option>
 
                             @foreach ($doctors as $doctor)
+
                                 <option
                                     value="{{ $doctor->id }}"
                                     {{ old('doctor_id') == $doctor->id ? 'selected' : '' }}
                                 >
+
                                     Dr. {{ $doctor->user->name }}
+
                                     - {{ $doctor->specialization }}
+
                                 </option>
+
                             @endforeach
+
                         </select>
 
                         @error('doctor_id')
+
                             <div class="text-danger small mt-1">
                                 {{ $message }}
                             </div>
+
                         @enderror
+
                     </div>
 
+
                     <!-- Date -->
+
                     <div class="col-md-6">
+
                         <label class="form-label fw-bold">
-                            Date <span class="text-danger">*</span>
+
+                            Date
+                            <span class="text-danger">*</span>
+
                         </label>
 
                         <input
@@ -140,16 +248,25 @@
                         >
 
                         @error('appointment_date')
+
                             <div class="text-danger small mt-1">
                                 {{ $message }}
                             </div>
+
                         @enderror
+
                     </div>
 
+
                     <!-- Time -->
+
                     <div class="col-md-6">
+
                         <label class="form-label fw-bold">
-                            Time <span class="text-danger">*</span>
+
+                            Time
+                            <span class="text-danger">*</span>
+
                         </label>
 
                         <input
@@ -164,19 +281,29 @@
                         >
 
                         @error('appointment_time')
+
                             <div class="text-danger small mt-1">
                                 {{ $message }}
                             </div>
+
                         @enderror
+
                     </div>
 
+
                     <!-- Status -->
+
                     <div class="col-12">
+
                         <label class="form-label fw-bold">
                             Status
                         </label>
 
-                        <select name="status" class="form-select">
+                        <select
+                            name="status"
+                            class="form-select"
+                        >
+
                             <option
                                 value="pending"
                                 {{ old('status', 'pending') == 'pending' ? 'selected' : '' }}
@@ -190,13 +317,21 @@
                             >
                                 Confirmed
                             </option>
+
                         </select>
+
                     </div>
 
+
                     <!-- Reason -->
+
                     <div class="col-12">
+
                         <label class="form-label fw-bold">
-                            Reason <span class="text-danger">*</span>
+
+                            Reason
+                            <span class="text-danger">*</span>
+
                         </label>
 
                         <textarea
@@ -208,62 +343,96 @@
                         >{{ old('reason') }}</textarea>
 
                         @error('reason')
+
                             <div class="text-danger small mt-1">
                                 {{ $message }}
                             </div>
+
                         @enderror
+
                     </div>
 
                 </div>
+
             </div>
 
+
             <div class="modal-footer">
+
                 <button
                     type="button"
                     class="btn btn-outline-secondary"
                     data-bs-dismiss="modal"
                 >
+
                     Cancel
+
                 </button>
 
-                <button type="submit" class="btn btn-primary">
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+
                     <i class="fas fa-calendar-plus me-1"></i>
+
                     Create Appointment
+
                 </button>
+
             </div>
 
         </form>
+
     </div>
+
 </div>
+
 
 </div>
 
 <!-- Existing Appointments -->
 
 <div class="card">
-    <div class="card-header">
-        <h5 class="mb-0">
-            <i class="fas fa-list me-2"></i>
-            All Appointments
-        </h5>
-    </div>
+
+
+<div class="card-header">
+
+    <h5 class="mb-0">
+
+        <i class="fas fa-list me-2"></i>
+
+        All Appointments
+
+    </h5>
+
+</div>
+
 
 <div class="card-body p-0">
 
-    @if($appointments->isEmpty())
+    @if ($appointments->isEmpty())
 
         <div class="text-center py-5">
+
             <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
-            <p class="text-muted">No appointments found.</p>
+
+            <p class="text-muted mb-0">
+                No appointments found.
+            </p>
+
         </div>
 
     @else
 
         <div class="table-responsive">
+
             <table class="table table-hover mb-0">
 
                 <thead class="table-light">
+
                     <tr>
+
                         <th>ID</th>
                         <th>Patient</th>
                         <th>Doctor</th>
@@ -272,46 +441,86 @@
                         <th>Status</th>
                         <th>Reason</th>
                         <th>Created</th>
+                        <th>Actions</th>
+
                     </tr>
+
                 </thead>
 
+
                 <tbody>
+
                     @foreach ($appointments as $appointment)
+
                         <tr>
+
+                            <!-- Appointment Number -->
 
                             <td>
                                 {{ $appointment->appointment_number }}
                             </td>
 
+
+                            <!-- Patient -->
+
                             <td>
+
                                 <div class="fw-medium">
-                                    {{ $appointment->patient->full_name }} 
+
+                                    {{ $appointment->patient->full_name }}
+
                                 </div>
 
                                 <small class="text-muted">
-                                    {{ $appointment->patient->email }}
+
+                                    {{ $appointment->patient->email ?? 'No email provided' }}
+
                                 </small>
+
                             </td>
 
+
+                            <!-- Doctor -->
+
                             <td>
+
                                 <div>
+
                                     Dr. {{ $appointment->doctor->user->name }}
+
                                 </div>
 
                                 <small class="text-muted">
+
                                     {{ $appointment->doctor->specialization }}
+
                                 </small>
+
                             </td>
 
+
+                            <!-- Date -->
+
                             <td>
+
                                 {{ $appointment->appointment_date->format('M d, Y') }}
+
                             </td>
 
+
+                            <!-- Time -->
+
                             <td>
+
                                 {{ $appointment->appointment_time->format('h:i A') }}
+
                             </td>
 
+
+                            <!-- Status -->
+
                             <td>
+
                                 <span class="badge bg-{{
                                     match($appointment->status->value) {
                                         'pending' => 'warning',
@@ -321,49 +530,186 @@
                                         default => 'secondary'
                                     }
                                 }}">
+
                                     {{ ucfirst($appointment->status->value) }}
+
                                 </span>
+
                             </td>
+
+
+                            <!-- Reason -->
 
                             <td
                                 class="text-truncate"
                                 style="max-width: 200px;"
                             >
+
                                 {{ $appointment->reason }}
+
                             </td>
 
+
+                            <!-- Created -->
+
                             <td class="text-muted small">
+
                                 {{ $appointment->created_at->format('M d, Y H:i') }}
+
+                            </td>
+
+
+                            <!-- Actions -->
+
+                            <td>
+
+                                <div class="d-flex gap-1">
+
+
+                                    <!-- View -->
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-outline-primary"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#showAppointmentModal{{ $appointment->id }}"
+                                        title="View appointment"
+                                    >
+
+                                        <i class="fas fa-eye"></i>
+
+                                    </button>
+
+
+                                    @if ($appointment->status->value === 'pending')
+
+
+                                        <!-- Confirm -->
+
+                                        <form
+                                            action="{{ route('receptionist.appointment.update', $appointment->id) }}"
+                                            method="POST"
+                                        >
+
+                                            @csrf
+
+                                            @method('PUT')
+
+                                            <input
+                                                type="hidden"
+                                                name="status"
+                                                value="confirmed"
+                                            >
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-sm btn-success"
+                                                title="Confirm appointment"
+                                            >
+
+                                                <i class="fas fa-check"></i>
+
+                                            </button>
+
+                                        </form>
+
+
+                                        <!-- Cancel -->
+
+                                        <form
+                                            action="{{ route('receptionist.appointment.update', $appointment->id) }}"
+                                            method="POST"
+                                        >
+
+                                            @csrf
+
+                                            @method('PUT')
+
+                                            <input
+                                                type="hidden"
+                                                name="status"
+                                                value="cancelled"
+                                            >
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-sm btn-outline-danger"
+                                                title="Cancel appointment"
+                                            >
+
+                                                <i class="fas fa-times"></i>
+
+                                            </button>
+
+                                        </form>
+
+                                    @endif
+
+                                </div>
+
                             </td>
 
                         </tr>
+
                     @endforeach
+
                 </tbody>
 
             </table>
+
         </div>
 
+
         <div class="card-footer">
+
             {{ $appointments->links() }}
+
         </div>
 
     @endif
 
 </div>
 
+
 </div>
 
-<!-- Reopen modal after validation error -->
+<!-- Appointment View Modals -->
 
-@if ($errors->any()) <script>
-document.addEventListener('DOMContentLoaded', function () {
-const modalElement = document.getElementById('createAppointmentModal');
+@foreach ($appointments as $appointment)
+
+
+@include('receptionist.appointment.modals.view', [
+    'appointment' => $appointment
+])
+
+
+@endforeach
+
+<!-- Reopen Create Appointment Modal After Validation Error -->
+
+@if ($errors->any())
+
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const modalElement =
+            document.getElementById('createAppointmentModal');
+
         if (modalElement) {
-            const modal = new bootstrap.Modal(modalElement);
+
+            const modal =
+                new bootstrap.Modal(modalElement);
+
             modal.show();
+
         }
+
     });
+
 </script>
+
 
 @endif
 

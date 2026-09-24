@@ -18,9 +18,6 @@ use App\Http\Controllers\DoctorPatientController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\PrescriptionController;
-use App\Http\Controllers\PatientDashboardController;
-use App\Http\Controllers\PatientMedicalRecordController;
-use App\Http\Controllers\PatientPrescriptionController;
 use App\Http\Controllers\PatientAppointmentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuditLogController;
@@ -93,19 +90,13 @@ Route::middleware(['auth', 'patient', 'must.change.password'])
     ->prefix('patient')
     ->group(function () {
 
+        Route::get('/dashboard', function () {
+            return view('patient.dashboard');
+        })->name('patient.dashboard');
 
-        Route::get('/dashboard', [PatientDashboardController::class, 'index'])
-            ->name('patient.dashboard');
         Route::resource('appointment', PatientAppointmentController::class)
             ->only(['index', 'show', 'create', 'store'])
             ->names('patient.appointment');
-        Route::resource('medical-record', PatientMedicalRecordController::class)
-            ->only(['index', 'show'])
-            ->names('patient.medical-record');
-
-        Route::resource('prescription', PatientPrescriptionController::class)
-            ->only(['index', 'show'])
-            ->names('patient.prescription');
     });
 
 

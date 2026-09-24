@@ -36,8 +36,9 @@ class UpdatePatientRequest extends FormRequest
             'phone' => [
                 'required',
                 'string',
-                'max:20',
+                'regex:/^(98|97|96)\d{8}$/',
             ],
+
 
             'email' => [
                 'nullable',

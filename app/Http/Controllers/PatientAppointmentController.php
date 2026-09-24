@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StorePatientAppointmentRequest;
 use App\Models\Appointment;
-use App\Models\Patient;
+use App\Models\Department;
 use App\Models\Doctor;
+use App\Services\AppointmentService;
+use Illuminate\Http\Request;
 
 class PatientAppointmentController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct(protected AppointmentService $appointmentService)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -28,21 +37,40 @@ class PatientAppointmentController extends Controller
         return view("patient.appointment.index", compact("appointments"));
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        $departments = Department::orderBy('name')->get();
+
+        $doctors = Doctor::with(['user', 'department'])
+            ->orderBy('id')
+            ->get();
+
+        return view('patient.appointment.create', compact('departments', 'doctors'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePatientAppointmentRequest $request)
     {
-        //
+        $patient = auth()->user()->patient;
+
+        if (!$patient) {
+            abort(403, "Patient profile not found.");
+        }
+
+        $data = $request->validated();
+        $data['patient_id'] = $patient->id;
+        $data['status'] = 'pending'; // default status
+
+        $appointment = $this->appointmentService->create($data);
+
+        return redirect()
+            ->route('patient.appointment.index')
+            ->with('success', 'Appointment booked successfully. Your appointment is pending confirmation.');
     }
 
     /**

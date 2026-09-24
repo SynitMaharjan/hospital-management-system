@@ -78,8 +78,25 @@ class ReceptionistAppointmentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'status' => ['required', 'in:confirmed,cancelled'],
+        ]);
+
+        $appointment = Appointment::findOrFail($id);
+
+        $this->appointmentService->updateStatus(
+            $appointment,
+            $request->status
+        );
+
+        return redirect()
+            ->route('receptionist.appointment.index')
+            ->with(
+                'success',
+                'Appointment status updated successfully.'
+            );
     }
+
 
     /**
      * Remove the specified resource from storage.

@@ -61,11 +61,12 @@ class StoreStaffRequest extends FormRequest
             ],
 
             // Common staff profile field
-            "phone" => [
-                "required",
-                "string",
-                "max:20",
+            'phone' => [
+                'required',
+                'string',
+                'regex:/^(98|97|96)\d{8}$/',
             ],
+
 
             // Required for Doctor and Nurse
             "department_id" => [

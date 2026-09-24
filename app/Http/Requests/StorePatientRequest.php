@@ -7,7 +7,6 @@ use App\Enums\Gender;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-
 class StorePatientRequest extends FormRequest
 {
     public function authorize(): bool
@@ -26,7 +25,7 @@ class StorePatientRequest extends FormRequest
             ],
 
             'middle_name' => [
-                'required',
+                'nullable',
                 'string',
                 'max:255',
                 'regex:/^[\pL\s.\'-]+$/u',
@@ -38,10 +37,26 @@ class StorePatientRequest extends FormRequest
                 'max:255',
                 'regex:/^[\pL\s.\'-]+$/u',
             ],
-            
-            'phone' => ['required', 'string', 'max:20'],
-            'email' => ['nullable', 'email', 'max:255', 'unique:patients,email'],
-            'date_of_birth' => ['nullable', 'date'],
+
+            'phone' => [
+                'required',
+                'string',
+                'regex:/^(98|97|96)\d{8}$/',
+            ],
+
+
+            'email' => [
+                'nullable',
+                'email',
+                'max:255',
+                'unique:patients,email',
+            ],
+
+            'date_of_birth' => [
+                'nullable',
+                'date',
+            ],
+
             'gender' => [
                 'nullable',
                 Rule::enum(Gender::class),

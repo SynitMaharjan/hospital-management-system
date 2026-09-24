@@ -39,7 +39,7 @@ class RegisterRequest extends FormRequest
             ],
 
             'middle_name' => [
-                'required',
+                'nullable',
                 'string',
                 'max:255',
                 'regex:/^[\pL\s.\'-]+$/u',
@@ -78,8 +78,9 @@ class RegisterRequest extends FormRequest
             'phone' => [
                 'required',
                 'string',
-                'max:20',
+                'regex:/^(98|97|96)\d{8}$/',
             ],
+
 
             'date_of_birth' => [
                 'required',

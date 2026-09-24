@@ -38,6 +38,16 @@ class Appointment extends Model
     {
         return $this->hasOne(MedicalRecord::class);
     }
+
+    public function checkIn()
+    {
+        return $this->hasOne(CheckIn::class);
+    }
+
+    public function bill()
+    {
+        return $this->hasOne(Bill::class);
+    }
     protected static function booted()
     {
         static::created(function ($appointment) {
