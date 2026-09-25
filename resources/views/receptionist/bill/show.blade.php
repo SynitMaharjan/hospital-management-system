@@ -31,14 +31,15 @@ Bill {{ $bill->bill_number }}
             Back to Bills
         </a>
 
-        <button
-            type="button"
-            class="btn btn-primary"
-            onclick="window.print()"
-        >
-            <i class="fa-solid fa-print me-1"></i>
+        <a
+            href="{{ route('receptionist.bill.print', $bill) }}"
+            target="_blank"
+            class="btn btn-sm btn-outline-success"
+            title="Print Bill"
+            >
+            <i class="fa-solid fa-print"></i>
             Print
-        </button>
+        </a>
 
     </div>
 

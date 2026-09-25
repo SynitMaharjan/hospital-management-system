@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\AppointmentStatus;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Services\AppointmentService;
@@ -13,7 +14,7 @@ class DoctorAppointmentController extends Controller
     ) {
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $doctor = auth()->user()->doctor;
 
@@ -23,10 +24,37 @@ class DoctorAppointmentController extends Controller
 
         $appointments = Appointment::with("patient.user")
             ->where("doctor_id", $doctor->id)
-            ->latest()
-            ->paginate(10);
 
-        return view("doctor.appointment.index", compact("appointments"));
+            // Search by appointment number or patient name
+            ->when($request->filled("search"), function ($query) use ($request) {
+                $search = $request->search;
+
+                $query->where(function ($query) use ($search) {
+                    $query->where("appointment_number", "ILIKE", "%{$search}%")
+                        ->orWhereHas("patient", function ($patientQuery) use ($search) {
+                            $patientQuery
+                                ->where("first_name", "ILIKE", "%{$search}%")
+                                ->orWhere("middle_name", "ILIKE", "%{$search}%")
+                                ->orWhere("last_name", "ILIKE", "%{$search}%");
+                        });
+                });
+            })
+
+            // Filter by appointment status
+            ->when($request->filled("status"), function ($query) use ($request) {
+                $query->where("status", $request->status);
+            })
+
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        $statuses = AppointmentStatus::cases();
+
+        return view(
+            "doctor.appointment.index",
+            compact("appointments", "statuses")
+        );
     }
 
     public function show(string $id)
@@ -65,8 +93,9 @@ class DoctorAppointmentController extends Controller
         );
 
         return response()->json([
-            'message' => 'Appointment marked as completed successfully.',
-            'status' => 'success',
+            "message" => "Appointment marked as completed successfully.",
+            "status" => "success",
         ]);
-    }   
+    }
 }
+

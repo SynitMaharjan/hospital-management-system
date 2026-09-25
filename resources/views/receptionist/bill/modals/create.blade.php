@@ -7,239 +7,235 @@
 >
     <div class="modal-dialog modal-lg modal-dialog-centered">
 
-        <div class="modal-content">
 
-            <div class="modal-header">
+    <div class="modal-content">
 
-                <h5 class="modal-title" id="createBillModalLabel">
+        {{-- Modal Header --}}
+        <div class="modal-header">
 
-                    <i class="fa-solid fa-file-invoice me-2"></i>
-                    Create New Bill
+            <h5 class="modal-title" id="createBillModalLabel">
+                <i class="fa-solid fa-file-invoice me-2"></i>
+                Create New Bill
+            </h5>
 
-                </h5>
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+            ></button>
 
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                ></button>
+        </div>
 
-            </div>
 
-            <form
-                method="POST"
-                action="{{ route('receptionist.bill.store') }}"
-            >
+        {{-- Form --}}
+        <form
+            method="POST"
+            action="{{ route('receptionist.bill.store') }}"
+        >
 
-                @csrf
+            @csrf
 
-                <div class="modal-body">
 
-                    <div class="row g-3">
+            <div class="modal-body">
 
-                        {{-- Patient --}}
+                <div class="row g-3">
 
-                        <div class="col-md-6">
+                    {{-- Patient --}}
+                    <div class="col-md-6">
 
-                            <label class="form-label fw-bold">
+                        <label
+                            for="bill_patient_id"
+                            class="form-label fw-bold"
+                        >
+                            Patient
+                            <span class="text-danger">*</span>
+                        </label>
 
-                                Patient
-                                <span class="text-danger">*</span>
+                        <select
+                            name="patient_id"
+                            id="bill_patient_id"
+                            class="form-select"
+                            required
+                        >
 
-                            </label>
+                            <option value="">
+                                Select Patient
+                            </option>
 
-                            <select
-                                name="patient_id"
-                                id="bill_patient_id"
-                                class="form-select"
-                                required
-                            >
+                            @foreach ($patients as $patient)
 
-                                <option value="">
-                                    Select Patient
+                                <option
+                                    value="{{ $patient->id }}"
+                                    {{ old('patient_id') == $patient->id ? 'selected' : '' }}
+                                >
+                                    {{ $patient->full_name }}
+
+                                    @if($patient->email)
+                                        — {{ $patient->email }}
+                                    @endif
+
                                 </option>
 
-                                @foreach ($patients as $patient)
+                            @endforeach
 
-                                    <option
-                                        value="{{ $patient->id }}"
-                                        {{ old('patient_id') == $patient->id ? 'selected' : '' }}
-                                    >
+                        </select>
 
-                                        {{ $patient->full_name }}
+                        @error('patient_id')
+                            <div class="text-danger small mt-1">
+                                {{ $message }}
+                            </div>
+                        @enderror
 
-                                        ({{ $patient->email ?? 'No email provided' }})
+                        <small class="text-muted">
+                            Search by patient name or email.
+                        </small>
 
-                                    </option>
-
-                                @endforeach
-
-                            </select>
-
-                            @error('patient_id')
-
-                                <div class="text-danger small mt-1">
-                                    {{ $message }}
-                                </div>
-
-                            @enderror
-
-                        </div>
+                    </div>
 
 
-                        {{-- Appointment --}}
+                    {{-- Appointment --}}
+                    <div class="col-md-6">
 
-                        <div class="col-md-6">
+                        <label
+                            for="bill_appointment_id"
+                            class="form-label fw-bold"
+                        >
+                            Appointment
+                        </label>
 
-                            <label class="form-label fw-bold">
+                        <select
+                            name="appointment_id"
+                            id="bill_appointment_id"
+                            class="form-select"
+                            disabled
+                        >
 
-                                Appointment
+                            <option value="">
+                                Select a patient first
+                            </option>
 
-                            </label>
+                        </select>
 
-                            <select
-                                name="appointment_id"
-                                id="bill_appointment_id"
-                                class="form-select"
-                                disabled
-                            >
+                        @error('appointment_id')
+                            <div class="text-danger small mt-1">
+                                {{ $message }}
+                            </div>
+                        @enderror
 
-                                <option value="">
-                                    Select a patient first
-                                </option>
+                        <small class="text-muted">
+                            Only appointments belonging to the selected patient will be shown.
+                        </small>
 
-                            </select>
-
-                            @error('appointment_id')
-
-                                <div class="text-danger small mt-1">
-                                    {{ $message }}
-                                </div>
-
-                            @enderror
-
-                            <small class="text-muted">
-
-                                Only appointments belonging to the selected patient will be shown.
-
-                            </small>
-
-                        </div>
+                    </div>
 
 
-                        {{-- Billing Date --}}
+                    {{-- Billing Date --}}
+                    <div class="col-md-6">
 
-                        <div class="col-md-6">
+                        <label
+                            for="billing_date"
+                            class="form-label fw-bold"
+                        >
+                            Billing Date
+                            <span class="text-danger">*</span>
+                        </label>
 
-                            <label class="form-label fw-bold">
+                        <input
+                            type="date"
+                            name="billing_date"
+                            id="billing_date"
+                            class="form-control"
+                            value="{{ old('billing_date', now()->toDateString()) }}"
+                            required
+                        >
 
-                                Billing Date
-                                <span class="text-danger">*</span>
+                        @error('billing_date')
+                            <div class="text-danger small mt-1">
+                                {{ $message }}
+                            </div>
+                        @enderror
 
-                            </label>
+                    </div>
+
+
+                    {{-- Discount --}}
+                    <div class="col-md-6">
+
+                        <label
+                            for="discount_percentage"
+                            class="form-label fw-bold"
+                        >
+                            Discount
+                        </label>
+
+                        <div class="input-group">
 
                             <input
-                                type="date"
-                                name="billing_date"
+                                type="number"
+                                name="discount_percentage"
+                                id="discount_percentage"
                                 class="form-control"
-                                value="{{ old('billing_date', now()->toDateString()) }}"
-                                required
+                                value="{{ old('discount_percentage', 0) }}"
+                                min="0"
+                                max="100"
+                                step="0.01"
+                                placeholder="Enter discount percentage"
                             >
 
-                            @error('billing_date')
-
-                                <div class="text-danger small mt-1">
-                                    {{ $message }}
-                                </div>
-
-                            @enderror
+                            <span class="input-group-text">
+                                %
+                            </span>
 
                         </div>
 
-
-                        {{-- Discount --}}
-
-                        <div class="col-md-6">
-
-                            <label class="form-label fw-bold">
-
-                                Discount
-
-                            </label>
-
-                            <div class="input-group">
-
-                                <input
-                                    type="number"
-                                    name="discount_percentage"
-                                    class="form-control"
-                                    value="{{ old('discount_percentage', 0) }}"
-                                    min="0"
-                                    max="100"
-                                    step="0.01"
-                                    placeholder="Enter discount percentage"
-                                >
-
-                                <span class="input-group-text">
-                                    %
-                                </span>
-
+                        @error('discount_percentage')
+                            <div class="text-danger small mt-1">
+                                {{ $message }}
                             </div>
+                        @enderror
 
-                            @error('discount_percentage')
-
-                                <div class="text-danger small mt-1">
-                                    {{ $message }}
-                                </div>
-
-                            @enderror
-
-                            <small class="text-muted">
-
-                                Enter a discount between 0% and 100%.
-
-                            </small>
-
-                        </div>
+                        <small class="text-muted">
+                            Enter a discount between 0% and 100%.
+                        </small>
 
                     </div>
 
                 </div>
 
+            </div>
 
-                <div class="modal-footer">
 
-                    <button
-                        type="button"
-                        class="btn btn-outline-secondary"
-                        data-bs-dismiss="modal"
-                    >
+            {{-- Modal Footer --}}
+            <div class="modal-footer">
 
-                        <i class="fa-solid fa-xmark me-1"></i>
-                        Cancel
+                <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    data-bs-dismiss="modal"
+                >
+                    <i class="fa-solid fa-xmark me-1"></i>
+                    Cancel
+                </button>
 
-                    </button>
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    <i class="fa-solid fa-file-invoice me-1"></i>
+                    Create Bill
+                </button>
 
-                    <button
-                        type="submit"
-                        class="btn btn-primary"
-                    >
+            </div>
 
-                        <i class="fas fa-file-invoice me-1"></i>
-                        Create Bill
-
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
+        </form>
 
     </div>
+
 </div>
 
+
+</div>
 
 @push('scripts')
 
@@ -254,6 +250,25 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('bill_appointment_id');
 
 
+    /*
+     * Searchable Patient Dropdown
+     */
+    const patientDropdown = new TomSelect(patientSelect, {
+
+        placeholder: 'Search or select patient...',
+
+        allowEmptyOption: true,
+
+        maxOptions: 100,
+
+        searchField: ['text'],
+
+    });
+
+
+    /*
+     * Reset Appointment Dropdown
+     */
     function resetAppointments(message) {
 
         appointmentSelect.innerHTML = '';
@@ -262,6 +277,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.createElement('option');
 
         option.value = '';
+
         option.textContent = message;
 
         appointmentSelect.appendChild(option);
@@ -270,6 +286,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
+    /*
+     * Load Patient Appointments
+     */
     function loadAppointments(patientId) {
 
         if (!patientId) {
@@ -288,6 +307,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.createElement('option');
 
         loadingOption.value = '';
+
         loadingOption.textContent =
             'Loading appointments...';
 
@@ -301,6 +321,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch(
             `/receptionist/bill/patient/${patientId}/appointments`
         )
+
             .then(response => {
 
                 if (!response.ok) {
@@ -314,15 +335,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
 
             })
+
             .then(appointments => {
 
                 appointmentSelect.innerHTML = '';
 
 
+                /*
+                 * Default Option
+                 */
                 const defaultOption =
                     document.createElement('option');
 
                 defaultOption.value = '';
+
                 defaultOption.textContent =
                     'No Appointment';
 
@@ -331,6 +357,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 );
 
 
+                /*
+                 * Appointment Options
+                 */
                 appointments.forEach(function (appointment) {
 
                     const option =
@@ -364,6 +393,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 appointmentSelect.disabled = false;
 
 
+                /*
+                 * No Appointments
+                 */
                 if (appointments.length === 0) {
 
                     appointmentSelect.innerHTML = '';
@@ -383,6 +415,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
             })
+
             .catch(error => {
 
                 console.error(
@@ -399,6 +432,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
+    /*
+     * Patient Changed
+     */
     patientSelect.addEventListener(
         'change',
         function () {
@@ -409,6 +445,12 @@ document.addEventListener('DOMContentLoaded', function () {
     );
 
 
+    /*
+     * Load Existing Patient
+     *
+     * Useful when validation fails and
+     * old('patient_id') is available.
+     */
     if (patientSelect.value) {
 
         loadAppointments(

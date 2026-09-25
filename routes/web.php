@@ -254,5 +254,12 @@ Route::controller(AuthController::class)
 
 // HOME
 Route::get('/', function () {
-    return view('welcome');
+
+    if (auth()->check()) {
+        return redirect()->route(
+            auth()->user()->role->value . '.dashboard'
+        );
+    }
+
+    return redirect()->route('login');
 });
